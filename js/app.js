@@ -43,16 +43,74 @@ var enemyIndex = 0;
 var dead = false;
 var deadImageIndex = 0;
 
+
 // Jquery Application -> Manipulate Window View
 jQuery(function($){
     'use strict';
+    var openingTimer;
+    var openingCounter = 0;
+    var startAnimation;
+    var moveCharactors= function() {
+        $("#start-boy").animate(
+            {left: "-=100px"}, 3000)
+            .animate({left: "+=100px"}, 3000
+            );
+        $("#start-enemy").animate(
+            {left: "-=100px"}, 3000)
+            .animate({left: "+=100px"}, 3000
+            );
+        $('#start-gem').animate({opacity: "0.1"}, 3000)
+            .animate({opacity: "1.0"}, 3000);
 
+    }
     var App = {
         init: function() {
-            setInterval(newEnemies, ENEMIES_APPEAR_INTERVAL);
+            $('#opening').show();
+            this.flashAction();
+            $('#start').hide();
+            $('#countdown').hide();
+            $('#end').hide();
+            $('#dead').hide();
+            this.bindEvents();
+
+        },
+        bindEvents: function(){
+            console.log('bind-event');
+            $('#start-button').on('click', this.start.bind(this));
+        },
+        flashAction: function() {
+            setTimeout(function(){
+               $('#flash').fadeIn('fast', function(){
+                   $('#opening').hide();
+                   $('#start').show();
+                   moveCharactors();
+                   setInterval(moveCharactors, 6000)
+               }).fadeOut('fast');
+            }, 4000);
+        },
+
+        getImage: function(row){
+            var imageSources = [
+                'images/water-block.png',   // water
+                'images/stone-block.png',   // stone
+                'images/grass-block.png'    // grass
+            ];
+            var image = new Image();
+            image.src = imageSources[row];
+            return image;
         },
         start: function(){
+            clearTimeout(openingTimer);
+            $('#countdown').slideDown('fast', null);
+            $('#start').hide();
+            this.beginGame();
+        },
+        renderOpening: function(){
 
+        },
+        beginGame: function(){
+            //TODO: Count Down and Start the game
+            setInterval(newEnemies, ENEMIES_APPEAR_INTERVAL);
         }
     }
 
@@ -117,7 +175,7 @@ function collided(player, enemy) {
 // a handleInput() method.
 var Player = function (x, y) {
     this.sprite = "images/char-boy.png";
-    this.died_sprite = "images/boy_dead_1.png";
+    this.died_sprite = "images/dead-boy.png";
     this.x = x;
     this.y = y;
     this.collided = false;
@@ -135,6 +193,7 @@ Player.prototype.render = function () {
     }
 }
 
+// Control Player
 Player.prototype.handleInput = function (keyInfo) {
     if (dead) {
         dead = false;
@@ -167,6 +226,24 @@ Player.prototype.handleInput = function (keyInfo) {
     console.log('##################');
     console.log(this.y);
 }
+
+// dead after collision
+Player.prototype.dead = function(ctx) {
+    //ctx.drawImage(Resources.get('images/boy_dead_5.png'), 19, 552.5);
+    ctx.font = '23pt Arial';
+    ctx.globalAlpha = 0.6;
+    ctx.strokeStyle = 'yellow';
+    ctx.lineWidth = 6;
+    // ctx.strokeText(player.lives, 89, 575);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = 'black';
+    // ctx.fillText(player.lives, 89, 575);
+    /* Use the browser's requestAnimationFrame function to call this
+     * function again as soon as the browser is able to draw another frame.
+     */
+    this.collided = false;
+}
+
 
 
 // New Player -> Just in case I may change the start position randomly
@@ -246,5 +323,3 @@ function sleep(milliSeconds) {
     var time = new Date().getTime();
     while (new Date().getTime() < time + milliSeconds);
 }
-
-

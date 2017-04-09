@@ -4,9 +4,51 @@
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One|Faster+One|Russo+One" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
 </head>
 <body>
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <section id="opening" class="overlay">
+        <div id="title-letters">
+            <img src="images/title_letters/A.png" alt="A" id="title-1" class="show-up-from-top-left">
+            <img src="images/title_letters/r.png" alt="r" id="title-2" class="show-up-from-top-left">
+            <img src="images/title_letters/c.png" alt="c" id="title-3" class="show-up-from-top-left">
+            <img src="images/title_letters/a_small.png" alt="a" id="title-4" class="show-up-from-top-left">
+            <img src="images/title_letters/d.png" alt="d" id="title-5" class="show-up-from-top-left">
+            <img src="images/title_letters/e.png" alt="e" id="title-6" class="show-up-from-top-left">
+            <img src="images/title_letters/G.png" alt="e" id="title-7" class="spacer-50 show-up-from-top-left">
+            <img src="images/title_letters/a_small.png" alt="e" id="title-8" class="show-up-from-top-left">
+            <img src="images/title_letters/m.png" alt="e" id="title-9" class="show-up-from-top-left">
+            <img src="images/title_letters/e.png" alt="e" id="title-10" class="show-up-from-top-left">
+        </div>
+        <div id="nekki-letters">
+            <img src="images/nekki_letters/b.png" alt="b" id="nekki-1" class="show-up-from-right">
+            <img src="images/nekki_letters/y.png" alt="y" id="nekki-2" class="show-up-from-right">
+            <img src="images/nekki_letters/N.png" alt="N" id="nekki-3" class="spacer-50 show-up-from-right">
+            <img src="images/nekki_letters/e.png" alt="e" id="nekki-4" class="show-up-from-right">
+            <img src="images/nekki_letters/k.png" alt="k" id="nekki-5" class="show-up-from-right">
+            <img src="images/nekki_letters/k.png" alt="k" id="nekki-6" class="show-up-from-right">
+            <img src="images/nekki_letters/i.png" alt="i" id="nekki-7" class="show-up-from-right">
+        </div>
+    </section>
+    <section id="flash"></section>
+    <section id="start" class="overlay">
+
+        <div id="start-animation">
+
+            <img id="start-enemy" src="images/enemy-bug.png" alt="enemy">
+            <img id="start-gem" src="images/Gem%20Orange.png" alt="gem">
+            <img id="start-boy" src="images/char-boy.png" alt="boy">
+        </div>
+        <div class="action">
+            <button id="start-button" class="button">Start</button>
+        </div>
+    </section>
+    <section id="countdown" class="overlay"></section>
+    <section id="dead" class="overlay"></section>
+    <section id="end" class="overlay"></section>
+    <script src="js/jquery/jquery.min.js"></script>
+    <!--<script src="js/jquery_easing/jquery.easing.min.js"></script>-->
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>

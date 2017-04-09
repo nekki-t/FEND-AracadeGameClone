@@ -57,20 +57,20 @@ var Engine = (function(global) {
          * function again as soon as the browser is able to draw another frame.
          */
         if(player.collided) {
-            // Draw heart image and lives text
-            //ctx.drawImage(Resources.get('images/boy_dead_5.png'), 19, 552.5);
-            ctx.font = '23pt Arial';
-            ctx.globalAlpha = 0.6;
-            ctx.strokeStyle = 'yellow';
-            ctx.lineWidth = 6;
-            // ctx.strokeText(player.lives, 89, 575);
-            ctx.globalAlpha = 1;
-            ctx.fillStyle = 'black';
-            // ctx.fillText(player.lives, 89, 575);
-            /* Use the browser's requestAnimationFrame function to call this
-             * function again as soon as the browser is able to draw another frame.
-             */
-            player.collided = false;
+            // //ctx.drawImage(Resources.get('images/boy_dead_5.png'), 19, 552.5);
+            // ctx.font = '23pt Arial';
+            // ctx.globalAlpha = 0.6;
+            // ctx.strokeStyle = 'yellow';
+            // ctx.lineWidth = 6;
+            // // ctx.strokeText(player.lives, 89, 575);
+            // ctx.globalAlpha = 1;
+            // ctx.fillStyle = 'black';
+            // // ctx.fillText(player.lives, 89, 575);
+            // /* Use the browser's requestAnimationFrame function to call this
+            //  * function again as soon as the browser is able to draw another frame.
+            //  */
+            // player.collided = false;
+            player.dead(ctx);
             setTimeout(function() {
                 player = playerFactory();
                 win.requestAnimationFrame(main);
@@ -199,6 +199,7 @@ var Engine = (function(global) {
         'images/boy_dead_3.png',
         'images/boy_dead_4.png',
         'images/boy_dead_5.png',
+        'images/dead-boy.png',
         'images/char-pink-girl.png'
     ]);
     Resources.onReady(init);
