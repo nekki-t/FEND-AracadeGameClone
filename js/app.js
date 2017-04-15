@@ -59,7 +59,7 @@ jQuery(function($){
             {left: "-=100px"}, 3000)
             .animate({left: "+=100px"}, 3000
             );
-        $('#start-gem').animate({opacity: "0.1"}, 3000)
+        $('#start-gem').animate({opacity: "0"}, 3000)
             .animate({opacity: "1.0"}, 3000);
 
     }

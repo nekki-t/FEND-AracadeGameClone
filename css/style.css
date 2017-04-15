@@ -3,6 +3,9 @@ body {
     font-family: 'Black Ops One', cursive;
 }
 
+canvas {
+    margin-top: 300px;
+}
 
 .overlay {
     z-index: 1500;
