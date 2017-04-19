@@ -36,21 +36,49 @@ const PLAYER_HIT_WIDTH = 68;
 const PLAYER_HIT_HEIGHT = 80;
 const ENEMY_HIT_WIDTH = 99;
 const ENEMY_HIT_HEIGHT = 69;
-const ENEMY_WIDTH = 101;
+const ENEMY_WIDTH = 81;
+const PLAYER_WIDTH = 68;
+
+// Game Scores
+const LEVEL_UP_SCORES = [
+    1000,
+    2000,
+    3000,
+    4000,
+    5000,
+    6000,
+    7000,
+    8000,
+    9000,
+    10000
+];
+
+// Default Lives the player has
+const DEFAULT_LIVES = 3;
+
+// time limit for each level
+const LEVEL1_3 = 30;
+
 
 // Global Vars
 var enemyIndex = 0;
 var dead = false;
-var deadImageIndex = 0;
+var levelClearTextPos = 0;
 
 
 // Jquery Application -> Manipulate Window View
-jQuery(function($){
+jQuery(function ($) {
     'use strict';
     var openingTimer;
-    var openingCounter = 0;
-    var startAnimation;
-    var moveCharactors= function() {
+
+    // template handler
+    Handlebars.registerHelper('eq', function (a, b, options) {
+        return a === b ? options.fn(this) : options.inverse(this);
+    });
+
+
+    // Start view showing some animations until the button pushed
+    var moveCharactors = function () {
         $("#start-boy").animate(
             {left: "-=100px"}, 3000)
             .animate({left: "+=100px"}, 3000
@@ -62,9 +90,34 @@ jQuery(function($){
         $('#start-gem').animate({opacity: "0"}, 3000)
             .animate({opacity: "1.0"}, 3000);
 
-    }
+        $('p.start-guide').fadeOut('fast')
+            .fadeIn('fast')
+            .fadeOut('fast')
+            .fadeIn('fast');
+    };
+
+    // To start the game!!
+    var beginGame = function () {
+        $('#countdown').fadeOut('fast');
+        $('#game-info').show();
+
+        // to append indicator below canvas
+        var indicator = Handlebars.compile($('#indicator-template').html());
+        $('body').append(indicator);
+
+        $('.meter-1').animate({opacity: "1"}, 1000, function () {
+            $('.meter-2').animate({opacity: "1"}, 1000, function () {
+                $('.meter-3').animate({opacity: "1"});
+            })
+        });
+
+        newEnemies(); // for the first call
+        setInterval(newEnemies, ENEMIES_APPEAR_INTERVAL);
+    };
+
     var App = {
-        init: function() {
+        // initialize each section
+        init: function () {
             $('#opening').show();
             this.flashAction();
             $('#start').hide();
@@ -72,24 +125,23 @@ jQuery(function($){
             $('#end').hide();
             $('#dead').hide();
             this.bindEvents();
-
         },
-        bindEvents: function(){
+        bindEvents: function () {
             console.log('bind-event');
             $('#start-button').on('click', this.start.bind(this));
         },
-        flashAction: function() {
-            setTimeout(function(){
-               $('#flash').fadeIn('fast', function(){
-                   $('#opening').hide();
-                   $('#start').show();
-                   moveCharactors();
-                   setInterval(moveCharactors, 6000)
-               }).fadeOut('fast');
+        // from opening to starting view
+        flashAction: function () {
+            setTimeout(function () {
+                $('#flash').fadeIn('fast', function () {
+                    $('#opening').hide();
+                    $('#start').show();
+                    moveCharactors();
+                    openingTimer = setInterval(moveCharactors, 6000)
+                }).fadeOut('fast');
             }, 4000);
         },
-
-        getImage: function(row){
+        getImage: function (row) {
             var imageSources = [
                 'images/water-block.png',   // water
                 'images/stone-block.png',   // stone
@@ -99,24 +151,19 @@ jQuery(function($){
             image.src = imageSources[row];
             return image;
         },
-        start: function(){
+        start: function () {
             clearTimeout(openingTimer);
-            $('#countdown').slideDown('fast', null);
-            $('#start').hide();
-            this.beginGame();
-        },
-        renderOpening: function(){
-
-        },
-        beginGame: function(){
-            //TODO: Count Down and Start the game
-            setInterval(newEnemies, ENEMIES_APPEAR_INTERVAL);
+            $('#countdown').slideDown('fast', function () {
+                $('#start').hide();
+                setTimeout(function () {
+                    beginGame();
+                }, 4000);
+            });
         }
     }
 
     App.init();
 });
-
 
 // Enemies our player must avoid
 var Enemy = function (x, y, speed) {
@@ -148,10 +195,11 @@ Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// judge Player gets hit by enemy
 Enemy.prototype.gotYou = function (player) {
-    if((player.y == PLAYER_1ST_ROW && this.y == ENEMY_1ST_ROW) ||
-        (player.y == PLAYER_2ND_ROW && this.y == ENEMY_2ND_ROW) ||
-        (player.y == PLAYER_3RD_ROW && this.y == ENEMY_3RD_ROW)
+    if ((player.y === PLAYER_1ST_ROW && this.y === ENEMY_1ST_ROW) ||
+        (player.y === PLAYER_2ND_ROW && this.y === ENEMY_2ND_ROW) ||
+        (player.y === PLAYER_3RD_ROW && this.y === ENEMY_3RD_ROW)
     ) {
         return (collided(player, this));
     } else {
@@ -159,8 +207,11 @@ Enemy.prototype.gotYou = function (player) {
     }
 }
 
+// To detect collisions between the player and an enemy
 function collided(player, enemy) {
-    if(enemy.x < player.x && player.x < (enemy.x + ENEMY_WIDTH)) {
+    if ((enemy.x < player.x && player.x < (enemy.x + ENEMY_WIDTH)) ||
+        enemy.x > player.x && enemy.x < (player.x + PLAYER_WIDTH)
+    ) {
         console.log('OUT!!!');
         player.collided = true;
         return true;
@@ -179,14 +230,32 @@ var Player = function (x, y) {
     this.x = x;
     this.y = y;
     this.collided = false;
+    this.reachedToTop = false;
+    this.currentLevel = 1;
+    this.lives = DEFAULT_LIVES;
+    this.score = 0;
 };
+
+// To reset position values for the Player
+Player.prototype.resetPosition = function () {
+    this.x = PLAYER_START_X;
+    this.y = PLAYER_START_Y;
+    this.collided = false;
+    this.reachedToTop = false;
+}
+
+// To reset all the properties of the player
+Player.prototype.reset = function () {
+    this.resetPosition();
+    this.currentLevel = 1;
+}
 
 Player.prototype.update = function () {
     console.log('update called...');
 }
 
 Player.prototype.render = function () {
-    if(player.collided) {
+    if (player.collided) {
         ctx.drawImage(Resources.get(this.died_sprite), this.x, this.y);
     } else {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -197,6 +266,9 @@ Player.prototype.render = function () {
 Player.prototype.handleInput = function (keyInfo) {
     if (dead) {
         dead = false;
+        return;
+    }
+    if(this.reachedToTop) {
         return;
     }
     switch (keyInfo) {
@@ -211,8 +283,10 @@ Player.prototype.handleInput = function (keyInfo) {
             }
             break;
         case UP:
-            if (this.y > TOP_BORDER) {
+            if (this.y >= TOP_BORDER) {
                 this.y -= ROW_HEIGHT;
+            } else if (this.y < TOP_BORDER) {
+                this.levelUp();
             }
             break;
         case DOWN:
@@ -228,7 +302,7 @@ Player.prototype.handleInput = function (keyInfo) {
 }
 
 // dead after collision
-Player.prototype.dead = function(ctx) {
+Player.prototype.dead = function (ctx) {
     //ctx.drawImage(Resources.get('images/boy_dead_5.png'), 19, 552.5);
     ctx.font = '23pt Arial';
     ctx.globalAlpha = 0.6;
@@ -244,45 +318,72 @@ Player.prototype.dead = function(ctx) {
     this.collided = false;
 }
 
+Player.prototype.levelUp = function () {
+    this.reachedToTop = true;
+    if (this.currentLevel === 10) {
+        // TODO: GAME Cleared
+    } else {
+        this.score += LEVEL_UP_SCORES[this.currentLevel - 1]; // adjust index
+        this.currentLevel++;
+        this.level++;
+        $('#current-score').hide();
+        $('#current-level').hide();
 
+        $('#current-score').text(('000000' + this.score).slice(-6));
+        $('#current-level').text(this.currentLevel);
+
+        $('#current-score').show();
+        $('#current-level').show();
+    }
+}
 
 // New Player -> Just in case I may change the start position randomly
 function playerFactory() {
     return new Player(PLAYER_START_X, PLAYER_START_Y);
 }
 
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [];
 function newEnemies() {
-    for(var i = 0; i < ENEMY_ROW_COUNT; i++) {
+    for (var i = 0; i < ENEMY_ROW_COUNT; i++) {
         allEnemies.push(new Enemy(randomStartX(), randomRow(), randomSpeed()));
     }
 
     if (allEnemies.length > EXECUTE_DELETE_ENEMIES_COUNT) {
         allEnemies.splice(0, DELETE_ENEMY_COUNT); // to reduce memory use
     }
+
+    var counter = 0;
+    $.each($('#game-info h1 span'), function () {
+        counter += 1;
+        $(this).delay(100 * counter).animate({'opacity': 1}, 1000);
+    });
 }
-function randomStartX () {
+
+function randomStartX() {
     var rnd = Math.random();
     if (rnd > 0.66) {
         return DEFAULT_ENEMY_START_X_POINT;
-    } else if(rnd > 0.33) {
+    } else if (rnd > 0.33) {
         return DEFAULT_ENEMY_START_X_POINT - MOVE_WIDTH;
     } else {
         return DEFAULT_ENEMY_START_X_POINT - MOVE_WIDTH * 2;
     }
 }
+
 function randomRow() {
     var rnd = Math.random();
     if (rnd > 0.66) {
         return ENEMY_1ST_ROW;
-    } else if(rnd > 0.33) {
+    } else if (rnd > 0.33) {
         return ENEMY_2ND_ROW;
     } else {
         return ENEMY_3RD_ROW;
     }
 }
+
 function randomSpeed() {
     if (Math.random() > 0.9) {
         return UNLUCKY_SPEED; // LOL...
@@ -310,7 +411,7 @@ document.addEventListener('keyup', function (e) {
 });
 
 function checkCollisions() {
-    allEnemies.forEach(function(enemy){
+    allEnemies.forEach(function (enemy) {
         if (enemy.gotYou(player)) {
             dead = true;
             return true;
