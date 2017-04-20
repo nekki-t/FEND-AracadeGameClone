@@ -1,10 +1,11 @@
+/** {*/
+    /*border: 1px solid red;*/
+/*}*/
+
 body {
     text-align: center;
     font-family: 'Black Ops One', cursive;
-}
-
-canvas {
-    margin-top: 300px;
+    background: rgba(33, 34, 34, 1)
 }
 
 .overlay {
@@ -18,13 +19,14 @@ canvas {
     top: 0;
     color: #888;
 }
+
 .spacer-50 {
     margin-left: 50px;
 }
+
 /*
     For opening view ##########################################
 */
-
 #opening {
     background-color: black;
 }
@@ -62,12 +64,14 @@ canvas {
     left: -2000px;
     top: -500px;
 }
+
 #title-2 {
     -webkit-animation-delay: .2s;
     -moz-animation-delay: .2s;
     -o-animation-delay: .2s;
     animation-delay: .2s;
 }
+
 #title-3 {
     -webkit-animation-delay: .4s;
     -moz-animation-delay: .4s;
@@ -80,12 +84,14 @@ canvas {
     -o-animation-delay: .6s;
     animation-delay: .6s;
 }
+
 #title-5 {
     -webkit-animation-delay: .8s;
     -moz-animation-delay: .8s;
     -o-animation-delay: .8s;
     animation-delay: .8s;
 }
+
 #title-6 {
     -webkit-animation-delay: 1.0s;
     -moz-animation-delay: 1.0s;
@@ -99,18 +105,21 @@ canvas {
     -o-animation-delay: 1.2s;
     animation-delay: 1.2s;
 }
+
 #title-8 {
     -webkit-animation-delay: 1.4s;
     -moz-animation-delay: 1.4s;
     -o-animation-delay: 1.4s;
     animation-delay: 1.4s;
 }
+
 #title-9 {
     -webkit-animation-delay: 1.6s;
     -moz-animation-delay: 1.6s;
     -o-animation-delay: 1.6s;
     animation-delay: 1.6s;
 }
+
 #title-10 {
     -webkit-animation-delay: 1.8s;
     -moz-animation-delay: 1.8s;
@@ -136,6 +145,7 @@ canvas {
 #nekki-letters {
     margin-top: 50px;
 }
+
 .show-up-from-right {
     position:relative;
     -webkit-animation-duration: .5s;
@@ -168,42 +178,49 @@ canvas {
     animation-name: showUpFromRight;
     left: 3000px;
 }
+
 #nekki-1 {
     -webkit-animation-delay: 2.3s;
     -moz-animation-delay: 2.3s;
     -o-animation-delay: 2.3s;
     animation-delay: 2.3s;
 }
+
 #nekki-2 {
     -webkit-animation-delay: 2.4s;
     -moz-animation-delay: 2.4s;
     -o-animation-delay: 2.4s;
     animation-delay: 2.4s;
 }
+
 #nekki-3 {
     -webkit-animation-delay: 2.5s;
     -moz-animation-delay: 2.5s;
     -o-animation-delay: 2.5s;
     animation-delay: 2.5s;
 }
+
 #nekki-4 {
     -webkit-animation-delay: 2.6s;
     -moz-animation-delay: 2.6s;
     -o-animation-delay: 2.6s;
     animation-delay: 2.6s;
 }
+
 #nekki-5 {
     -webkit-animation-delay: 2.7s;
     -moz-animation-delay: 2.7s;
     -o-animation-delay: 2.7s;
     animation-delay: 2.7s;
 }
+
 #nekki-6 {
     -webkit-animation-delay: 2.8s;
     -moz-animation-delay: 2.8s;
     -o-animation-delay: 2.8s;
     animation-delay: 2.8s;
 }
+
 #nekki-7 {
     -webkit-animation-delay: 2.9s;
     -moz-animation-delay: 2.9s;
@@ -220,11 +237,11 @@ canvas {
         left: -200px;
     }
     100%{
-        -webkit-transform: rotateY(1080deg);
-        -moz-transform: rotateY(1080deg);
-        -ms-transform: rotateY(1080deg);
-        -o-transform: rotateY(1080deg);
-        transform: rotateY(1080deg);
+        -webkit-transform: rotateY(360deg);
+        -moz-transform: rotateY(360deg);
+        -ms-transform: rotateY(360deg);
+        -o-transform: rotateY(360deg);
+        transform: rotateY(360deg);
         left: 0;
     }
 }
@@ -244,18 +261,41 @@ canvas {
     top: 0;
     display:none;
 }
+
 /*
     For start view ##########################################
 */
 #start {
     background-color: rgba(33,34,34,1);
 }
+
+#start h1 {
+    color: #ffff34;
+    font-family: 'Passion One', cursive;
+    font-size: 100pt;
+    margin: 50px auto 20px;
+}
+
+#start .created-by {
+    text-align: right;
+    margin-left: 33%;
+    width: 33%;
+    color: #f574ae;
+    font-size: 75pt;
+}
+
+#start h1,
+#start .created-by {
+    text-shadow: 1px 4px 6px #7a7a7a, 0 0 0 #000, 1px 4px 6px #dadada;
+
+}
+
 #start-animation {
     background-image: url('../images/stone-block.png');
     background-repeat: repeat;
     width:500px;
     height:171px;
-    margin: 200px auto 100px;
+    margin: 50px auto 100px;
 }
 
 #start-boy{
@@ -263,15 +303,23 @@ canvas {
     left: 100px;
     top: -20px;
 }
+
 #start-gem {
     position:relative;
     left: 4px;
     top: -35px;
 }
+
 #start-enemy{
     position: relative;
     left: 5px;
     top:-20px;
+}
+
+#start p.start-guide {
+    color: lawngreen;
+    font-size:35pt;
+    font-family: "Russo One";
 }
 
 #start .action {
@@ -280,13 +328,74 @@ canvas {
     text-align: center;
 }
 
-
 #countdown {
-    background: rgba(243, 57, 57, .96);
+    background: rgb(50, 50, 50);
 }
 
+#countdown #counter {
+    padding: 400px 0 400px;
+}
 
+/*.counter {*/
+    /*display: none;*/
+/*}*/
 
+.counter {
+    opacity: 0;
+    width: 0;
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    -o-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-iteration-count: 1;
+    -moz-animation-iteration-count: 1;
+    -o-animation-iteration-count: 1;
+    animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease-in-out;
+    -moz-animation-timing-function: ease-in-out;
+    -o-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-name: countDownAnim;
+    -moz-animation-name: countDownAnim;
+    -o-animation-name: countDownAnim;
+    animation-name: countDownAnim;
+}
+
+@keyframes countDownAnim {
+    5%{
+        opacity: 1;
+        width: 500px;
+        height: 500px;
+    }
+    70%{
+        width: 277px;
+        height: 277px;
+    }
+    100% {
+        widgth: 0;
+    }
+}
+
+#count3 {
+    -webkit-animation-delay: 1s;
+    -moz-animation-delay: 1s;
+    -o-animation-delay: 1s;
+    animation-delay: 1s;
+}
+
+#count2 {
+    -webkit-animation-delay: 2s;
+    -moz-animation-delay: 2s;
+    -o-animation-delay: 2s;
+    animation-delay: 2s;
+}
+
+#count1 {
+    -webkit-animation-delay: 3s;
+    -moz-animation-delay: 3s;
+    -o-animation-delay: 3s;
+    animation-delay: 3s;
+}
 
 .button {
     font-size:50px;
@@ -297,28 +406,91 @@ canvas {
     transition: all 0.3s ease-in-out;
     background-color: aqua;
     border: none;
+    -webkit-box-shadow: 0 3px 3px 5px #ced4f1;
+    -moz-box-shadow: 0 3px 3px 5px #ced4f1;
+    box-shadow: 0 3px 3px 5px #ced4f1;
 }
 
 .button:hover {
     background-color: rgba(244, 163, 195, 0.8);
 }
 
-/*.input---2xxQr {*/
-    /*position: absolute;*/
-    /*top: -6px;*/
-    /*left: 0;*/
-    /*width: 84%;*/
-    /*height: 110%;*/
-    /*border: none;*/
-    /*padding: 0;*/
-    /*outline: none;*/
-    /*background: none;*/
-    /*white-space: pre-wrap!important;*/
-    /*word-wrap: break-word;*/
-    /*color: #f2f2f2;*/
-    /*overflow: hidden;*/
-    /*font-size: 70px;*/
-    /*line-height: 100%;*/
-    /*font-weight: 400;*/
-    /*font-family: Gotham SSm A,Gotham SSm B,sans-serif;*/
-/*}*/
+/*
+    game info view ##########################################
+*/
+#game-info {
+    display: none;
+}
+
+#game-info h1{
+    color: yellow;
+    font-size: 100pt;
+    margin:0;
+}
+
+#game-info h1 span {
+    opacity: 0;
+}
+
+#game-info h1 span#current-level {
+    margin-left:30px;
+    color: lawngreen;
+    transition: all 3s ease-in-out;
+}
+
+#game-info #score,
+#game-info #life {
+    line-height:80px;
+    color: #FFFFAD;
+    text-align: center;
+}
+
+#game-info #score {
+    font-size: 80px;
+}
+#game-info #score #current-score {
+    margin-left: 20px;
+    transition: all 0.3s ease-in-out;
+}
+
+#game-info #life {
+    font-size: 60px;
+    padding-left:30px;
+}
+
+#game-info #life img{
+    height:80px;
+    top: 18px;
+    position: relative;
+}
+
+#game-info #life span {
+    margin-left: 20px;
+    color: #f574ae;
+}
+
+#indicator {
+    width: 505px;
+    margin: auto;
+}
+
+#indicator h1 {
+    margin-top: 0;
+    color: #f147e9;
+    font-size: 20pt;
+}
+
+#indicator .meter {
+    width: 9%;
+    marting-right: 1px;
+    height: 50px;
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+    display: inline-block;
+}
+
+#indicator .meter-1,
+#indicator .meter-2,
+#indicator .meter-3 {
+    background-color: white;
+}

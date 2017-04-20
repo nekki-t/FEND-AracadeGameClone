@@ -326,6 +326,8 @@ Player.prototype.levelUp = function () {
         this.score += LEVEL_UP_SCORES[this.currentLevel - 1]; // adjust index
         this.currentLevel++;
         this.level++;
+
+        // TODO: animate
         $('#current-score').hide();
         $('#current-level').hide();
 

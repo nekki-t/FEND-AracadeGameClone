@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One|Faster+One|Russo+One" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One|Faster+One|Russo+One|Passion+One" rel="stylesheet">
+
 </head>
 <body>
     <section id="opening" class="overlay">
@@ -33,22 +34,65 @@
     </section>
     <section id="flash"></section>
     <section id="start" class="overlay">
-
+        <div>
+            <h1>Arcade Game</h1>
+            <div class="created-by">by Nekki</div>
+        </div>
         <div id="start-animation">
-
             <img id="start-enemy" src="images/enemy-bug.png" alt="enemy">
             <img id="start-gem" src="images/Gem%20Orange.png" alt="gem">
             <img id="start-boy" src="images/char-boy.png" alt="boy">
+        </div>
+        <div>
+            <p class="start-guide">
+                click the button to start
+            </p>
         </div>
         <div class="action">
             <button id="start-button" class="button">Start</button>
         </div>
     </section>
-    <section id="countdown" class="overlay"></section>
+    <section id="countdown" class="overlay">
+        <div id="counter">
+            <img id="count3" class="counter" src="images/counter/three.png" alt="3">
+            <img id="count2" class="counter" src="images/counter/two.png" alt="2">
+            <img id="count1" class="counter" src="images/counter/one.png" alt="1">
+        </div>
+    </section>
     <section id="dead" class="overlay"></section>
     <section id="end" class="overlay"></section>
+    <section id="game-info">
+        <h1>
+            <span class="level">L</span><span class="level">e</span><span class="level">v</span><span class="level">e</span><span class="level">l</span><span id="current-level" class="level">1</span>
+        </h1>
+        <div id="score">
+            Score: <span id="current-score">000000</span>
+        </div>
+        <div id="life">
+            <img src="images/heart.png" alt="life"><span>x 3</span>
+        </div>
+    </section>
+
+    <script id="indicator-template" type="text/x-handlebars-template">
+        <section id="indicator">
+            <h1>Time Limit to the Next Level</h1>
+            <div id="indicator-wrapper">
+                <div class="meter meter-1"></div>
+                <div class="meter meter-2"></div>
+                <div class="meter meter-3"></div>
+                <div class="meter meter-4"></div>
+                <div class="meter meter-5"></div>
+                <div class="meter meter-6"></div>
+                <div class="meter meter-7"></div>
+                <div class="meter meter-8"></div>
+                <div class="meter meter-9"></div>
+                <div class="meter meter-10"></div>
+            </div>
+        </section>
+    </script>
     <script src="js/jquery/jquery.min.js"></script>
     <!--<script src="js/jquery_easing/jquery.easing.min.js"></script>-->
+    <script src="js/handlebars/handlebars.js"></script>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>

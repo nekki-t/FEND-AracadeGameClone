@@ -57,24 +57,11 @@ var Engine = (function(global) {
          * function again as soon as the browser is able to draw another frame.
          */
         if(player.collided) {
-            // //ctx.drawImage(Resources.get('images/boy_dead_5.png'), 19, 552.5);
-            // ctx.font = '23pt Arial';
-            // ctx.globalAlpha = 0.6;
-            // ctx.strokeStyle = 'yellow';
-            // ctx.lineWidth = 6;
-            // // ctx.strokeText(player.lives, 89, 575);
-            // ctx.globalAlpha = 1;
-            // ctx.fillStyle = 'black';
-            // // ctx.fillText(player.lives, 89, 575);
-            // /* Use the browser's requestAnimationFrame function to call this
-            //  * function again as soon as the browser is able to draw another frame.
-            //  */
-            // player.collided = false;
             player.dead(ctx);
-            setTimeout(function() {
-                player = playerFactory();
+            setTimeout(function () {
+                player.resetPosition();
                 win.requestAnimationFrame(main);
-            }, 2000);
+            }, 1000);
         } else {
             win.requestAnimationFrame(main);
         }
@@ -158,6 +145,7 @@ var Engine = (function(global) {
             }
         }
 
+
         renderEntities();
     }
 
@@ -174,6 +162,25 @@ var Engine = (function(global) {
         });
 
         player.render();
+
+        // Customize here under
+
+        // TODO: GEMS
+        // TODO: STARS
+
+        // Player clears a level -> show point up message.
+        if(player.reachedToTop) {
+            ctx.font = '25pt Impact';
+            ctx.lineWidth = 10;
+            ctx.strokeStyle = 'white';
+            ctx.fillStyle = 'yellow';
+            ctx.fillText(1000 + ' Up', player.x, player.y + PLAYER_HIT_HEIGHT + 50 - levelClearTextPos);
+            levelClearTextPos += 1;
+            if(levelClearTextPos > 30) {
+                levelClearTextPos = 0;
+                player.resetPosition();
+            }
+        }
     }
 
     /* This function does nothing but it could have been a good place to
