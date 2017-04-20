@@ -601,8 +601,8 @@
     },
 
     /**
-     * Play a sound or resume previous playback.
-     * @param  {String/Number} sprite   Sprite name for sprite playback or sound id to continue previous.
+     * Play a sounds or resume previous playback.
+     * @param  {String/Number} sprite   Sprite name for sprite playback or sounds id to continue previous.
      * @param  {Boolean} internal Internal Use: true prevents event firing.
      * @return {Number}          Sound ID.
      */
@@ -707,7 +707,7 @@
           node.gain.setValueAtTime(vol, Howler.ctx.currentTime);
           sound._playStart = Howler.ctx.currentTime;
 
-          // Play the sound using the supported method.
+          // Play the sounds using the supported method.
           if (typeof node.bufferSource.start === 'undefined') {
             sound._loop ? node.bufferSource.noteGrainOn(0, seek, 86400) : node.bufferSource.noteGrainOn(0, seek, duration);
           } else {
@@ -923,9 +923,9 @@
     },
 
     /**
-     * Mute/unmute a single sound or all sounds in this Howl group.
+     * Mute/unmute a single sounds or all sounds in this Howl group.
      * @param  {Boolean} muted Set to true to mute and false to unmute.
-     * @param  {Number} id    The sound ID to update (omit to mute/unmute all).
+     * @param  {Number} id    The sounds ID to update (omit to mute/unmute all).
      * @return {Howl}
      */
     mute: function(muted, id) {
@@ -976,11 +976,11 @@
     },
 
     /**
-     * Get/set the volume of this sound or of the Howl group. This method can optionally take 0, 1 or 2 arguments.
+     * Get/set the volume of this sounds or of the Howl group. This method can optionally take 0, 1 or 2 arguments.
      *   volume() -> Returns the group's volume value.
-     *   volume(id) -> Returns the sound id's current volume.
+     *   volume(id) -> Returns the sounds id's current volume.
      *   volume(vol) -> Sets the volume of all sounds in this Howl group.
-     *   volume(vol, id) -> Sets the volume of passed sound id.
+     *   volume(vol, id) -> Sets the volume of passed sounds id.
      * @return {Howl/Number} Returns self or current volume.
      */
     volume: function() {
@@ -1058,11 +1058,11 @@
     },
 
     /**
-     * Fade a currently playing sound between two volumes (if no id is passsed, all sounds will fade).
+     * Fade a currently playing sounds between two volumes (if no id is passsed, all sounds will fade).
      * @param  {Number} from The value to fade from (0.0 to 1.0).
      * @param  {Number} to   The volume to fade to (0.0 to 1.0).
      * @param  {Number} len  Time in milliseconds to fade.
-     * @param  {Number} id   The sound id (omit to fade all sounds).
+     * @param  {Number} id   The sounds id (omit to fade all sounds).
      * @return {Howl}
      */
     fade: function(from, to, len, id) {
@@ -1156,8 +1156,8 @@
 
     /**
      * Internal method that stops the currently playing fade when
-     * a new fade starts, volume is changed or the sound is stopped.
-     * @param  {Number} id The sound id.
+     * a new fade starts, volume is changed or the sounds is stopped.
+     * @param  {Number} id The sounds id.
      * @return {Howl}
      */
     _stopFade: function(id) {
@@ -1178,11 +1178,11 @@
     },
 
     /**
-     * Get/set the loop parameter on a sound. This method can optionally take 0, 1 or 2 arguments.
+     * Get/set the loop parameter on a sounds. This method can optionally take 0, 1 or 2 arguments.
      *   loop() -> Returns the group's loop value.
-     *   loop(id) -> Returns the sound id's loop value.
+     *   loop(id) -> Returns the sounds id's loop value.
      *   loop(loop) -> Sets the loop value for all sounds in this Howl group.
-     *   loop(loop, id) -> Sets the loop value of passed sound id.
+     *   loop(loop, id) -> Sets the loop value of passed sounds id.
      * @return {Howl/Boolean} Returns self or current loop value.
      */
     loop: function() {
@@ -1229,11 +1229,11 @@
     },
 
     /**
-     * Get/set the playback rate of a sound. This method can optionally take 0, 1 or 2 arguments.
-     *   rate() -> Returns the first sound node's current playback rate.
-     *   rate(id) -> Returns the sound id's current playback rate.
+     * Get/set the playback rate of a sounds. This method can optionally take 0, 1 or 2 arguments.
+     *   rate() -> Returns the first sounds node's current playback rate.
+     *   rate(id) -> Returns the sounds id's current playback rate.
      *   rate(rate) -> Sets the playback rate of all sounds in this Howl group.
-     *   rate(rate, id) -> Sets the playback rate of passed sound id.
+     *   rate(rate, id) -> Sets the playback rate of passed sounds id.
      * @return {Howl/Number} Returns self or the current playback rate.
      */
     rate: function() {
@@ -1322,11 +1322,11 @@
     },
 
     /**
-     * Get/set the seek position of a sound. This method can optionally take 0, 1 or 2 arguments.
-     *   seek() -> Returns the first sound node's current seek position.
-     *   seek(id) -> Returns the sound id's current seek position.
-     *   seek(seek) -> Sets the seek position of the first sound node.
-     *   seek(seek, id) -> Sets the seek position of passed sound id.
+     * Get/set the seek position of a sounds. This method can optionally take 0, 1 or 2 arguments.
+     *   seek() -> Returns the first sounds node's current seek position.
+     *   seek(id) -> Returns the sounds id's current seek position.
+     *   seek(seek) -> Sets the seek position of the first sounds node.
+     *   seek(seek, id) -> Sets the seek position of passed sounds id.
      * @return {Howl/Number} Returns self or the current seek position.
      */
     seek: function() {
@@ -1412,8 +1412,8 @@
     },
 
     /**
-     * Check if a specific sound is currently playing or not (if id is provided), or check if at least one of the sounds in the group is playing or not.
-     * @param  {Number}  id The sound id to check. If none is passed, the whole sound group is checked.
+     * Check if a specific sounds is currently playing or not (if id is provided), or check if at least one of the sounds in the group is playing or not.
+     * @param  {Number}  id The sounds id to check. If none is passed, the whole sounds group is checked.
      * @return {Boolean} True if playing and false if not.
      */
     playing: function(id) {
@@ -1436,8 +1436,8 @@
     },
 
     /**
-     * Get the duration of this sound. Passing a sound id will return the sprite duration.
-     * @param  {Number} id The sound id to check. If none is passed, return full source duration.
+     * Get the duration of this sounds. Passing a sounds id will return the sprite duration.
+     * @param  {Number} id The sounds id to check. If none is passed, return full source duration.
      * @return {Number} Audio duration in seconds.
      */
     duration: function(id) {
@@ -1701,8 +1701,8 @@
     },
 
     /**
-     * Clear the end timer for a sound playback.
-     * @param  {Number} id The sound ID.
+     * Clear the end timer for a sounds playback.
+     * @param  {Number} id The sounds ID.
      * @return {Howl}
      */
     _clearTimer: function(id) {
@@ -1815,8 +1815,8 @@
     },
 
     /**
-     * Load the sound back into the buffer source.
-     * @param  {Sound} sound The sound object to work with.
+     * Load the sounds back into the buffer source.
+     * @param  {Sound} sound The sounds object to work with.
      * @return {Howl}
      */
     _refreshBuffer: function(sound) {
@@ -2347,9 +2347,9 @@
   })(Howl.prototype.init);
 
   /**
-   * Get/set the stereo panning of the audio source for this sound or all in the group.
+   * Get/set the stereo panning of the audio source for this sounds or all in the group.
    * @param  {Number} pan  A value of -1.0 is all the way left and 1.0 is all the way right.
-   * @param  {Number} id (optional) The sound ID. If none is passed, all in group will be updated.
+   * @param  {Number} id (optional) The sounds ID. If none is passed, all in group will be updated.
    * @return {Howl/Number}    Returns self or the current stereo panning value.
    */
   Howl.prototype.stereo = function(pan, id) {
@@ -2424,14 +2424,14 @@
   };
 
   /**
-   * Get/set the 3D spatial position of the audio source for this sound or
+   * Get/set the 3D spatial position of the audio source for this sounds or
    * all in the group. The most common usage is to set the 'x' position for
    * left/right panning. Setting any value higher than 1.0 will begin to
-   * decrease the volume of the sound as it moves further away.
+   * decrease the volume of the sounds as it moves further away.
    * @param  {Number} x  The x-position of the audio from -1000.0 to 1000.0.
    * @param  {Number} y  The y-position of the audio from -1000.0 to 1000.0.
    * @param  {Number} z  The z-position of the audio from -1000.0 to 1000.0.
-   * @param  {Number} id (optional) The sound ID. If none is passed, all in group will be updated.
+   * @param  {Number} id (optional) The sounds ID. If none is passed, all in group will be updated.
    * @return {Howl/Array}    Returns self or the current 3D spatial position: [x, y, z].
    */
   Howl.prototype.pos = function(x, y, z, id) {
@@ -2442,7 +2442,7 @@
       return self;
     }
 
-    // If the sound hasn't loaded, add it to the load queue to change position when capable.
+    // If the sounds hasn't loaded, add it to the load queue to change position when capable.
     if (self._state !== 'loaded') {
       self._queue.push({
         event: 'pos',
@@ -2499,12 +2499,12 @@
 
   /**
    * Get/set the direction the audio source is pointing in the 3D cartesian coordinate
-   * space. Depending on how direction the sound is, based on the `cone` attributes,
-   * a sound pointing away from the listener can be quiet or silent.
+   * space. Depending on how direction the sounds is, based on the `cone` attributes,
+   * a sounds pointing away from the listener can be quiet or silent.
    * @param  {Number} x  The x-orientation of the source.
    * @param  {Number} y  The y-orientation of the source.
    * @param  {Number} z  The z-orientation of the source.
-   * @param  {Number} id (optional) The sound ID. If none is passed, all in group will be updated.
+   * @param  {Number} id (optional) The sounds ID. If none is passed, all in group will be updated.
    * @return {Howl/Array}    Returns self or the current 3D spatial orientation: [x, y, z].
    */
   Howl.prototype.orientation = function(x, y, z, id) {
@@ -2544,7 +2544,7 @@
     // Change the spatial orientation of one or all sounds in group.
     var ids = self._getSoundIds(id);
     for (var i=0; i<ids.length; i++) {
-      // Get the sound.
+      // Get the sounds.
       var sound = self._soundById(ids[i]);
 
       if (sound) {
@@ -2576,12 +2576,12 @@
   };
 
   /**
-   * Get/set the panner node's attributes for a sound or group of sounds.
+   * Get/set the panner node's attributes for a sounds or group of sounds.
    * This method can optionall take 0, 1 or 2 arguments.
    *   pannerAttr() -> Returns the group's values.
-   *   pannerAttr(id) -> Returns the sound id's values.
+   *   pannerAttr(id) -> Returns the sounds id's values.
    *   pannerAttr(o) -> Set's the values of all sounds in this Howl group.
-   *   pannerAttr(o, id) -> Set's the values of passed sound id.
+   *   pannerAttr(o, id) -> Set's the values of passed sounds id.
    *
    *   Attributes:
    *     coneInnerAngle - (360 by default) There will be no volume reduction inside this angle.
@@ -2740,8 +2740,8 @@
   /***************************************************************************/
 
   /**
-   * Create a new panner node and save it on the sound.
-   * @param  {Sound} sound Specific sound to setup panning on.
+   * Create a new panner node and save it on the sounds.
+   * @param  {Sound} sound Specific sounds to setup panning on.
    * @param {String} type Type of panner to create: 'stereo' or 'spatial'.
    */
   var setupPanner = function(sound, type) {

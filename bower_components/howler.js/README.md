@@ -125,7 +125,7 @@ sound.once('load', function(){
   sound.play();
 });
 
-// Fires when the sound finishes playing.
+sounds
 sound.on('end', function(){
   console.log('Finished!');
 });
@@ -138,11 +138,11 @@ var sound = new Howl({
 });
 
 // Play returns a uniqe Sound ID that can be passed
-// into any method on Howl to control that specific sound.
+sounds
 var id1 = sound.play();
 var id2 = sound.play();
 
-// Fade out the first sound and speed up the second.
+sounds
 sound.fade(1, 0, 1000, id1);
 sound.rate(1.5, id2);
 ```
@@ -404,7 +404,7 @@ Full support for playback of the Dolby Audio format (currently support in Edge a
 
 ```javascript
 var dolbySound = new Howl({
-  src: ['sound.mp4', 'sound.webm', 'sound.mp3'],
+  src: [sounds, sounds, sounds],
   format: ['dolby', 'webm', 'mp3']
 });
 ```

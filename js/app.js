@@ -111,6 +111,11 @@ jQuery(function ($) {
             })
         });
 
+        var sound = new Howl({
+           src: ['sounds/bgm.mp3']
+        });
+        sound.play();
+
         newEnemies(); // for the first call
         setInterval(newEnemies, ENEMIES_APPEAR_INTERVAL);
     };

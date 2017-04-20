@@ -48,7 +48,7 @@ Read more about the update [in this blog post](http://goldfirestudios.com/blog/1
 - The `pos` method has been renamed to `seek`.
 
 ```javascript
-// Change the seek position of a sound (in seconds).
+sounds
 sound.seek(10);
 ```
 
@@ -67,7 +67,7 @@ Howler.mute(false);
 - The `play` method no longer takes a callback and immediately returns the playback sound id (this means you can no longer chain onto the `play` method, but all others work the same).
 
 ```javascript
-// Get sound id for a specific playback.
+sounds
 var id = sound.play();
 
 // Pause this playback.
