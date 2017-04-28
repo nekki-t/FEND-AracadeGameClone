@@ -5,7 +5,7 @@
 body {
     text-align: center;
     font-family: 'Black Ops One', cursive;
-    background: rgba(33, 34, 34, 1)
+    background: rgba(33, 34, 34, 1);
 }
 
 .overlay {
@@ -32,7 +32,7 @@ body {
 }
 
 #title-letters{
-    margin-top: 200px;
+    margin-top: 100px;
 }
 
 .show-up-from-top-left {
@@ -333,7 +333,7 @@ body {
 }
 
 #countdown #counter {
-    padding: 400px 0 400px;
+    padding: 200px 0 200px;
 }
 
 /*.counter {*/
@@ -424,7 +424,7 @@ body {
 
 #game-info h1{
     color: yellow;
-    font-size: 100pt;
+    font-size: 70pt;
     margin:0;
 }
 
@@ -440,13 +440,14 @@ body {
 
 #game-info #score,
 #game-info #life {
-    line-height:80px;
-    color: #FFFFAD;
+    line-height:40px;
     text-align: center;
 }
 
 #game-info #score {
-    font-size: 80px;
+    font-size: 50px;
+    color: #FFFFAD;
+
 }
 #game-info #score #current-score {
     margin-left: 20px;
@@ -454,13 +455,13 @@ body {
 }
 
 #game-info #life {
-    font-size: 60px;
+    font-size: 40px;
     padding-left:30px;
 }
 
 #game-info #life img{
-    height:80px;
-    top: 18px;
+    height:40px;
+    top: 10px;
     position: relative;
 }
 
@@ -475,15 +476,15 @@ body {
 }
 
 #indicator h1 {
-    margin-top: 0;
+    margin: 0 auto 0;
     color: #f147e9;
     font-size: 20pt;
 }
 
 #indicator .meter {
     width: 9%;
-    marting-right: 1px;
-    height: 50px;
+    margin-right: 1px;
+    height: 30px;
     transition: all 0.3s ease-in-out;
     opacity: 0;
     display: inline-block;
