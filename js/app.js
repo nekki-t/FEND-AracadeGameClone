@@ -39,18 +39,20 @@ const ENEMY_HIT_HEIGHT = 69;
 const ENEMY_WIDTH = 81;
 const PLAYER_WIDTH = 68;
 
+const MESSAGE_SIZE = 25;
+
 // Game Scores
 const LEVEL_UP_SCORES = [
-    1000,
-    2000,
-    3000,
-    4000,
-    5000,
-    6000,
-    7000,
-    8000,
-    9000,
-    10000
+  1000,
+  2000,
+  3000,
+  4000,
+  5000,
+  6000,
+  7000,
+  8000,
+  9000,
+  10000
 ];
 
 // Default Lives the player has
@@ -59,294 +61,339 @@ const DEFAULT_LIVES = 3;
 // time limit for each level
 const LEVEL1_3 = 30;
 
-
 // Global Vars
 var enemyIndex = 0;
 var dead = false;
 var levelClearTextPos = 0;
+var deadTextPos = 0;
+var withSound = false;
 
-
-// Jquery Application -> Manipulate Window View
+// Jquery Application -> Manipulate DOM
 jQuery(function ($) {
-    'use strict';
-    var openingTimer;
+  'use strict';
+  var openingTimer;
 
-    // template handler
-    Handlebars.registerHelper('eq', function (a, b, options) {
-        return a === b ? options.fn(this) : options.inverse(this);
+  // template handler
+  Handlebars.registerHelper('eq', function (a, b, options) {
+    return a === b ? options.fn(this) : options.inverse(this);
+  });
+
+  // Start view showing some animations until the button pushed
+  var moveCharactors = function () {
+    $("#start-boy").animate(
+      {left: "-=100px"}, 3000)
+      .animate({left: "+=100px"}, 3000
+      );
+    $("#start-enemy").animate(
+      {left: "-=100px"}, 3000)
+      .animate({left: "+=100px"}, 3000
+      );
+    $('#start-gem').animate({opacity: "0"}, 3000)
+      .animate({opacity: "1.0"}, 3000);
+
+    $('p.start-guide').fadeOut('fast')
+      .fadeIn('fast')
+      .fadeOut('fast')
+      .fadeIn('fast');
+  };
+
+  // To start the game!!
+  var beginGame = function () {
+    $('#countdown').fadeOut('fast');
+    $('#game-info').show();
+
+    // to append indicator below canvas
+    var indicator = Handlebars.compile($('#indicator-template').html());
+    $('body').append(indicator);
+
+    $('.meter-1').animate({opacity: "1"}, 1000, function () {
+      $('.meter-2').animate({opacity: "1"}, 1000, function () {
+        $('.meter-3').animate({opacity: "1"});
+      })
     });
 
-
-    // Start view showing some animations until the button pushed
-    var moveCharactors = function () {
-        $("#start-boy").animate(
-            {left: "-=100px"}, 3000)
-            .animate({left: "+=100px"}, 3000
-            );
-        $("#start-enemy").animate(
-            {left: "-=100px"}, 3000)
-            .animate({left: "+=100px"}, 3000
-            );
-        $('#start-gem').animate({opacity: "0"}, 3000)
-            .animate({opacity: "1.0"}, 3000);
-
-        $('p.start-guide').fadeOut('fast')
-            .fadeIn('fast')
-            .fadeOut('fast')
-            .fadeIn('fast');
-    };
-
-    // To start the game!!
-    var beginGame = function () {
-        $('#countdown').fadeOut('fast');
-        $('#game-info').show();
-
-        // to append indicator below canvas
-        var indicator = Handlebars.compile($('#indicator-template').html());
-        $('body').append(indicator);
-
-        $('.meter-1').animate({opacity: "1"}, 1000, function () {
-            $('.meter-2').animate({opacity: "1"}, 1000, function () {
-                $('.meter-3').animate({opacity: "1"});
-            })
-        });
-
-        var sound = new Howl({
-           src: ['sounds/bgm.mp3']
-        });
-        sound.play();
-
-        newEnemies(); // for the first call
-        setInterval(newEnemies, ENEMIES_APPEAR_INTERVAL);
-    };
-
-    var App = {
-        // initialize each section
-        init: function () {
-            $('#opening').show();
-            this.flashAction();
-            $('#start').hide();
-            $('#countdown').hide();
-            $('#end').hide();
-            $('#dead').hide();
-            this.bindEvents();
-        },
-        bindEvents: function () {
-            console.log('bind-event');
-            $('#start-button').on('click', this.start.bind(this));
-        },
-        // from opening to starting view
-        flashAction: function () {
-            setTimeout(function () {
-                $('#flash').fadeIn('fast', function () {
-                    $('#opening').hide();
-                    $('#start').show();
-                    moveCharactors();
-                    openingTimer = setInterval(moveCharactors, 6000)
-                }).fadeOut('fast');
-            }, 4000);
-        },
-        getImage: function (row) {
-            var imageSources = [
-                'images/water-block.png',   // water
-                'images/stone-block.png',   // stone
-                'images/grass-block.png'    // grass
-            ];
-            var image = new Image();
-            image.src = imageSources[row];
-            return image;
-        },
-        start: function () {
-            clearTimeout(openingTimer);
-            $('#countdown').slideDown('fast', function () {
-                $('#start').hide();
-                setTimeout(function () {
-                    beginGame();
-                }, 4000);
-            });
-        }
+    if (withSound) {
+      var sound = new Howl({
+        src: ['sounds/bgm.mp3']
+      });
+      sound.play();
     }
 
-    App.init();
+    newEnemies(); // for the first call
+    setInterval(newEnemies, ENEMIES_APPEAR_INTERVAL);
+  };
+
+  // jQuery App
+  var App = {
+    // initialize each section
+    init: function () {
+      $('#opening').show();
+      this.flashAction();
+      $('#start').hide();
+      $('#countdown').hide();
+      $('#end').hide();
+      $('#dead').hide();
+      this.bindEvents();
+    },
+    bindEvents: function () {
+      console.log('bind-event');
+      $('#start-button').on('click', this.start.bind(this));
+      $('#start-button-with-sounds').on('click', this.start.bind(this));
+    },
+    // from opening to starting view
+    flashAction: function () {
+      setTimeout(function () {
+        $('#flash').fadeIn('fast', function () {
+          $('#opening').hide();
+          $('#start').show();
+          moveCharactors();
+          openingTimer = setInterval(moveCharactors, 6000)
+        }).fadeOut('fast');
+      }, 4000);
+    },
+    getImage: function (row) {
+      var imageSources = [
+        'images/water-block.png',   // water
+        'images/stone-block.png',   // stone
+        'images/grass-block.png'    // grass
+      ];
+      var image = new Image();
+      image.src = imageSources[row];
+      return image;
+    },
+    start: function (e) {
+      withSound = ($(e.target).attr('id') == 'start-button-with-sounds');
+      clearTimeout(openingTimer);
+      $('#countdown').slideDown('fast', function () {
+        $('#start').hide();
+        setTimeout(function () {
+          beginGame();
+        }, 4000);
+      });
+    }
+  }
+
+  App.init();
 });
 
 // Enemies our player must avoid
 var Enemy = function (x, y, speed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-    this.x = x;
-    this.y = y;
-    this.speed = speed;
+  // Variables applied to each of our instances go here,
+  // we've provided one for you to get started
+  this.x = x;
+  this.y = y;
+  this.speed = speed;
 
-    enemyIndex += 1;
-    this.index = enemyIndex;
+  enemyIndex += 1;
+  this.index = enemyIndex;
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+  // The image/sprite for our enemies, this uses
+  // a helper we've provided to easily load images
+  this.sprite = 'images/enemy-bug.png';
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function (dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    this.x = this.x + (dt * this.speed);
+  // You should multiply any movement by the dt parameter
+  // which will ensure the game runs at the same speed for
+  // all computers.
+
+  // if the player is collided, wait seconds for message shown
+  if(player.collided) {
+    return;
+  }
+  this.x = this.x + (dt * this.speed);
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function () {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // judge Player gets hit by enemy
 Enemy.prototype.gotYou = function (player) {
-    if ((player.y === PLAYER_1ST_ROW && this.y === ENEMY_1ST_ROW) ||
-        (player.y === PLAYER_2ND_ROW && this.y === ENEMY_2ND_ROW) ||
-        (player.y === PLAYER_3RD_ROW && this.y === ENEMY_3RD_ROW)
-    ) {
-        return (collided(player, this));
-    } else {
-        return false;
-    }
+  if ((player.y === PLAYER_1ST_ROW && this.y === ENEMY_1ST_ROW) ||
+    (player.y === PLAYER_2ND_ROW && this.y === ENEMY_2ND_ROW) ||
+    (player.y === PLAYER_3RD_ROW && this.y === ENEMY_3RD_ROW)
+  ) {
+    return (collided(player, this));
+  } else {
+    return false;
+  }
 }
 
 // To detect collisions between the player and an enemy
 function collided(player, enemy) {
-    if ((enemy.x < player.x && player.x < (enemy.x + ENEMY_WIDTH)) ||
-        enemy.x > player.x && enemy.x < (player.x + PLAYER_WIDTH)
-    ) {
-        console.log('OUT!!!');
-        player.collided = true;
-        return true;
-    } else {
-        return false;
-    }
+  if ((enemy.x < player.x && player.x < (enemy.x + ENEMY_WIDTH)) ||
+    enemy.x > player.x && enemy.x < (player.x + PLAYER_WIDTH)
+  ) {
+    player.collided = true;
+    return true;
+  } else {
+    return false;
+  }
 }
-
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function (x, y) {
-    this.sprite = "images/char-boy.png";
-    this.died_sprite = "images/dead-boy.png";
-    this.x = x;
-    this.y = y;
-    this.collided = false;
-    this.reachedToTop = false;
-    this.currentLevel = 1;
-    this.lives = DEFAULT_LIVES;
-    this.score = 0;
+  this.sprite = "images/char-boy.png";
+  this.died_sprite = "images/dead-boy.png";
+  this.x = x;
+  this.y = y;
+  this.collided = false;
+  this.reachedToTop = false;
+  this.currentLevel = 1;
+  this.lives = DEFAULT_LIVES;
+  this.score = 0;
 };
 
 // To reset position values for the Player
 Player.prototype.resetPosition = function () {
-    this.x = PLAYER_START_X;
-    this.y = PLAYER_START_Y;
-    this.collided = false;
-    this.reachedToTop = false;
+  this.x = PLAYER_START_X;
+  this.y = PLAYER_START_Y;
+  this.collided = false;
+  this.reachedToTop = false;
 }
 
 // To reset all the properties of the player
 Player.prototype.reset = function () {
-    this.resetPosition();
-    this.currentLevel = 1;
+  this.resetPosition();
+  this.currentLevel = 1;
 }
 
+// updating player view
 Player.prototype.update = function () {
-    console.log('update called...');
+  console.log('update called...');
 }
 
+// show player
 Player.prototype.render = function () {
-    if (player.collided) {
-        ctx.drawImage(Resources.get(this.died_sprite), this.x, this.y);
-    } else {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  if (player.collided) {
+    ctx.drawImage(Resources.get(this.died_sprite), this.x, this.y);
+  } else {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  }
+
+  // player succeeded in reaching to the top
+  if (player.reachedToTop) {
+    ctx.font = MESSAGE_SIZE.toString() + 'pt Impact';
+    ctx.lineWidth = 10;
+
+    ctx.strokeStyle = 'red';
+    ctx.strokeText(1000 + ' Up', player.x, player.y + PLAYER_HIT_HEIGHT + 50 - levelClearTextPos)
+
+    ctx.fillStyle = 'yellow';
+    ctx.fillText(1000 + ' Up', player.x, player.y + PLAYER_HIT_HEIGHT + 50 - levelClearTextPos);
+
+    levelClearTextPos += 1;
+    if (levelClearTextPos > 30) {
+      levelClearTextPos = 0;
+      player.resetPosition();
     }
-}
+  }
+
+  // player is dead...
+  if(player.collided) {
+
+    ctx.font = MESSAGE_SIZE.toString() + 'pt Passion';
+    ctx.lineWidth = 10;
+
+    ctx.strokeStyle = 'white';
+    ctx.strokeText( 'DEAD...', player.x, player.y + PLAYER_HIT_HEIGHT + 50 - deadTextPos)
+
+    ctx.fillStyle = 'red';
+    ctx.fillText('DEAD...', player.x, player.y + PLAYER_HIT_HEIGHT + 50 - deadTextPos);
+
+    deadTextPos += 1;
+    if (deadTextPos > 80) {
+      deadTextPos = 0;
+      player.resetPosition();
+    }
+  }
+};
 
 // Control Player
 Player.prototype.handleInput = function (keyInfo) {
-    if (dead) {
-        dead = false;
-        return;
-    }
-    if(this.reachedToTop) {
-        return;
-    }
-    switch (keyInfo) {
-        case LEFT:
-            if (this.x > LEFT_BORDER) {
-                this.x -= MOVE_WIDTH;
-            }
-            break;
-        case RIGHT:
-            if (this.x < RIGHT_BORDER) {
-                this.x += MOVE_WIDTH;
-            }
-            break;
-        case UP:
-            if (this.y >= TOP_BORDER) {
-                this.y -= ROW_HEIGHT;
-            } else if (this.y < TOP_BORDER) {
-                this.levelUp();
-            }
-            break;
-        case DOWN:
-            if (this.y < BOTTOM_BORDER) {
-                this.y += ROW_HEIGHT;
-            }
-            break;
-        default:
-            break;
-    }
-    console.log('##################');
-    console.log(this.y);
+  if (dead) {
+    dead = false;
+    return;
+  }
+  if (this.reachedToTop) {
+    return;
+  }
+  switch (keyInfo) {
+    case LEFT:
+      if (this.x > LEFT_BORDER) {
+        this.x -= MOVE_WIDTH;
+      }
+      break;
+    case RIGHT:
+      if (this.x < RIGHT_BORDER) {
+        this.x += MOVE_WIDTH;
+      }
+      break;
+    case UP:
+      if (this.y >= TOP_BORDER) {
+        this.y -= ROW_HEIGHT;
+        if(this.y < TOP_BORDER) {
+          this.levelUp();
+        }
+      }
+      break;
+    case DOWN:
+      if (this.y < BOTTOM_BORDER) {
+        this.y += ROW_HEIGHT;
+      }
+      break;
+    default:
+      break;
+  }
 }
 
 // dead after collision
 Player.prototype.dead = function (ctx) {
-    //ctx.drawImage(Resources.get('images/boy_dead_5.png'), 19, 552.5);
-    ctx.font = '23pt Arial';
-    ctx.globalAlpha = 0.6;
-    ctx.strokeStyle = 'yellow';
-    ctx.lineWidth = 6;
-    // ctx.strokeText(player.lives, 89, 575);
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = 'black';
-    // ctx.fillText(player.lives, 89, 575);
-    /* Use the browser's requestAnimationFrame function to call this
-     * function again as soon as the browser is able to draw another frame.
-     */
-    this.collided = false;
+  //ctx.drawImage(Resources.get('images/boy_dead_5.png'), 19, 552.5);
+  ctx.font = '23pt Arial';
+  ctx.globalAlpha = 0.6;
+  ctx.strokeStyle = 'yellow';
+  ctx.lineWidth = 6;
+  // ctx.strokeText(player.lives, 89, 575);
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = 'black';
+  // ctx.fillText(player.lives, 89, 575);
+  /* Use the browser's requestAnimationFrame function to call this
+   * function again as soon as the browser is able to draw another frame.
+   */
+  this.collided = false;
 }
 
 Player.prototype.levelUp = function () {
-    this.reachedToTop = true;
-    if (this.currentLevel === 10) {
-        // TODO: GAME Cleared
-    } else {
-        this.score += LEVEL_UP_SCORES[this.currentLevel - 1]; // adjust index
-        this.currentLevel++;
-        this.level++;
+  this.reachedToTop = true;
+  if (this.currentLevel === 10) {
+    // TODO: GAME Cleared
+  } else {
+    this.score += LEVEL_UP_SCORES[this.currentLevel - 1]; // adjust index
+    this.currentLevel++;
+    this.level++;
 
-        // TODO: animate
-        $('#current-score').hide();
-        $('#current-level').hide();
+    // TODO: animate
+    $('#current-score').hide();
+    $('#current-level').hide();
 
-        $('#current-score').text(('000000' + this.score).slice(-6));
-        $('#current-level').text(this.currentLevel);
+    $('#current-score').text(('000000' + this.score).slice(-6));
+    $('#current-level').text(this.currentLevel);
 
-        $('#current-score').show();
-        $('#current-level').show();
-    }
+    $('#current-score').show();
+    $('#current-level').show();
+  }
 }
 
 // New Player -> Just in case I may change the start position randomly
 function playerFactory() {
-    return new Player(PLAYER_START_X, PLAYER_START_Y);
+  return new Player(PLAYER_START_X, PLAYER_START_Y);
 }
 
 
@@ -354,80 +401,84 @@ function playerFactory() {
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [];
 function newEnemies() {
-    for (var i = 0; i < ENEMY_ROW_COUNT; i++) {
-        allEnemies.push(new Enemy(randomStartX(), randomRow(), randomSpeed()));
-    }
+  for (var i = 0; i < ENEMY_ROW_COUNT; i++) {
+    allEnemies.push(new Enemy(randomStartX(), randomRow(), randomSpeed()));
+  }
 
-    if (allEnemies.length > EXECUTE_DELETE_ENEMIES_COUNT) {
-        allEnemies.splice(0, DELETE_ENEMY_COUNT); // to reduce memory use
-    }
+  if (allEnemies.length > EXECUTE_DELETE_ENEMIES_COUNT) {
+    allEnemies.splice(0, DELETE_ENEMY_COUNT); // to reduce memory use
+  }
 
-    var counter = 0;
-    $.each($('#game-info h1 span'), function () {
-        counter += 1;
-        $(this).delay(100 * counter).animate({'opacity': 1}, 1000);
-    });
+  var counter = 0;
+  // show level info with animation
+  $.each($('#game-info h1 span'), function () {
+    counter += 1;
+    $(this).delay(100 * counter).animate({'opacity': 1}, 1000);
+  });
 }
 
+// allocate enemies x-position randomly
 function randomStartX() {
-    var rnd = Math.random();
-    if (rnd > 0.66) {
-        return DEFAULT_ENEMY_START_X_POINT;
-    } else if (rnd > 0.33) {
-        return DEFAULT_ENEMY_START_X_POINT - MOVE_WIDTH;
-    } else {
-        return DEFAULT_ENEMY_START_X_POINT - MOVE_WIDTH * 2;
-    }
+  var rnd = Math.random();
+  if (rnd > 0.66) {
+    return DEFAULT_ENEMY_START_X_POINT;
+  } else if (rnd > 0.33) {
+    return DEFAULT_ENEMY_START_X_POINT - MOVE_WIDTH;
+  } else {
+    return DEFAULT_ENEMY_START_X_POINT - MOVE_WIDTH * 2;
+  }
 }
 
+// allocate enemies in rows randomly
 function randomRow() {
-    var rnd = Math.random();
-    if (rnd > 0.66) {
-        return ENEMY_1ST_ROW;
-    } else if (rnd > 0.33) {
-        return ENEMY_2ND_ROW;
-    } else {
-        return ENEMY_3RD_ROW;
-    }
+  var rnd = Math.random();
+  if (rnd > 0.66) {
+    return ENEMY_1ST_ROW;
+  } else if (rnd > 0.33) {
+    return ENEMY_2ND_ROW;
+  } else {
+    return ENEMY_3RD_ROW;
+  }
 }
 
+// To make more fun, I change enemy's speed randomly
 function randomSpeed() {
-    if (Math.random() > 0.9) {
-        return UNLUCKY_SPEED; // LOL...
-    } else if (Math.random() > 0.7) {
-        return EXTRA_FAST;
-    } else {
-        return (Math.random() + 1) * BASIC_SPEED;
-    }
+  if (Math.random() > 0.9) {
+    return UNLUCKY_SPEED; // LOL...
+  } else if (Math.random() > 0.7) {
+    return EXTRA_FAST;
+  } else {
+    return (Math.random() + 1) * BASIC_SPEED;
+  }
 }
 
-// Place the player object in a variable called player
+// generate new instance for player to start
 var player = playerFactory();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function (e) {
-    var allowedKeys = {
-        37: LEFT,
-        38: UP,
-        39: RIGHT,
-        40: DOWN
-    };
+  var allowedKeys = {
+    37: LEFT,
+    38: UP,
+    39: RIGHT,
+    40: DOWN
+  };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+  player.handleInput(allowedKeys[e.keyCode]);
 });
 
 function checkCollisions() {
-    allEnemies.forEach(function (enemy) {
-        if (enemy.gotYou(player)) {
-            dead = true;
-            return true;
-        }
-    });
-    return false;
+  allEnemies.forEach(function (enemy) {
+    if (enemy.gotYou(player)) {
+      dead = true;
+      return true;
+    }
+  });
+  return false;
 }
 
 function sleep(milliSeconds) {
-    var time = new Date().getTime();
-    while (new Date().getTime() < time + milliSeconds);
+  var time = new Date().getTime();
+  while (new Date().getTime() < time + milliSeconds);
 }

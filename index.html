@@ -1,100 +1,110 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Effective JavaScript: Frogger</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One|Faster+One|Russo+One|Passion+One" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Effective JavaScript: Frogger</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Black+Ops+One|Faster+One|Russo+One|Passion+One"
+        rel="stylesheet">
 
 </head>
 <body>
-    <section id="opening" class="overlay">
-        <div id="title-letters">
-            <img src="images/title_letters/A.png" alt="A" id="title-1" class="show-up-from-top-left">
-            <img src="images/title_letters/r.png" alt="r" id="title-2" class="show-up-from-top-left">
-            <img src="images/title_letters/c.png" alt="c" id="title-3" class="show-up-from-top-left">
-            <img src="images/title_letters/a_small.png" alt="a" id="title-4" class="show-up-from-top-left">
-            <img src="images/title_letters/d.png" alt="d" id="title-5" class="show-up-from-top-left">
-            <img src="images/title_letters/e.png" alt="e" id="title-6" class="show-up-from-top-left">
-            <img src="images/title_letters/G.png" alt="e" id="title-7" class="spacer-50 show-up-from-top-left">
-            <img src="images/title_letters/a_small.png" alt="e" id="title-8" class="show-up-from-top-left">
-            <img src="images/title_letters/m.png" alt="e" id="title-9" class="show-up-from-top-left">
-            <img src="images/title_letters/e.png" alt="e" id="title-10" class="show-up-from-top-left">
-        </div>
-        <div id="nekki-letters">
-            <img src="images/nekki_letters/b.png" alt="b" id="nekki-1" class="show-up-from-right">
-            <img src="images/nekki_letters/y.png" alt="y" id="nekki-2" class="show-up-from-right">
-            <img src="images/nekki_letters/N.png" alt="N" id="nekki-3" class="spacer-50 show-up-from-right">
-            <img src="images/nekki_letters/e.png" alt="e" id="nekki-4" class="show-up-from-right">
-            <img src="images/nekki_letters/k.png" alt="k" id="nekki-5" class="show-up-from-right">
-            <img src="images/nekki_letters/k.png" alt="k" id="nekki-6" class="show-up-from-right">
-            <img src="images/nekki_letters/i.png" alt="i" id="nekki-7" class="show-up-from-right">
-        </div>
-    </section>
-    <section id="flash"></section>
-    <section id="start" class="overlay">
-        <div>
-            <h1>Arcade Game</h1>
-            <div class="created-by">by Nekki</div>
-        </div>
-        <div id="start-animation">
-            <img id="start-enemy" src="images/enemy-bug.png" alt="enemy">
-            <img id="start-gem" src="images/Gem%20Orange.png" alt="gem">
-            <img id="start-boy" src="images/char-boy.png" alt="boy">
-        </div>
-        <div>
-            <p class="start-guide">
-                click the button to start
-            </p>
-        </div>
-        <div class="action">
-            <button id="start-button" class="button">Start</button>
-        </div>
-    </section>
-    <section id="countdown" class="overlay">
-        <div id="counter">
-            <img id="count3" class="counter" src="images/counter/three.png" alt="3">
-            <img id="count2" class="counter" src="images/counter/two.png" alt="2">
-            <img id="count1" class="counter" src="images/counter/one.png" alt="1">
-        </div>
-    </section>
-    <section id="dead" class="overlay"></section>
-    <section id="end" class="overlay"></section>
-    <section id="game-info">
-        <h1>
-            <span class="level">L</span><span class="level">e</span><span class="level">v</span><span class="level">e</span><span class="level">l</span><span id="current-level" class="level">1</span>
-        </h1>
-        <div id="score">
-            Score: <span id="current-score">000000</span>
-        </div>
-        <div id="life">
-            <img src="images/heart.png" alt="life"><span>x 3</span>
-        </div>
-    </section>
+<section id="opening" class="overlay">
+  <div id="title-letters">
+    <img src="images/title_letters/A.png" alt="A" id="title-1" class="show-up-from-top-left">
+    <img src="images/title_letters/r.png" alt="r" id="title-2" class="show-up-from-top-left">
+    <img src="images/title_letters/c.png" alt="c" id="title-3" class="show-up-from-top-left">
+    <img src="images/title_letters/a_small.png" alt="a" id="title-4" class="show-up-from-top-left">
+    <img src="images/title_letters/d.png" alt="d" id="title-5" class="show-up-from-top-left">
+    <img src="images/title_letters/e.png" alt="e" id="title-6" class="show-up-from-top-left">
+    <img src="images/title_letters/G.png" alt="e" id="title-7" class="spacer-50 show-up-from-top-left">
+    <img src="images/title_letters/a_small.png" alt="e" id="title-8" class="show-up-from-top-left">
+    <img src="images/title_letters/m.png" alt="e" id="title-9" class="show-up-from-top-left">
+    <img src="images/title_letters/e.png" alt="e" id="title-10" class="show-up-from-top-left">
+  </div>
+  <div id="nekki-letters">
+    <img src="images/nekki_letters/b.png" alt="b" id="nekki-1" class="show-up-from-right">
+    <img src="images/nekki_letters/y.png" alt="y" id="nekki-2" class="show-up-from-right">
+    <img src="images/nekki_letters/N.png" alt="N" id="nekki-3" class="spacer-50 show-up-from-right">
+    <img src="images/nekki_letters/e.png" alt="e" id="nekki-4" class="show-up-from-right">
+    <img src="images/nekki_letters/k.png" alt="k" id="nekki-5" class="show-up-from-right">
+    <img src="images/nekki_letters/k.png" alt="k" id="nekki-6" class="show-up-from-right">
+    <img src="images/nekki_letters/i.png" alt="i" id="nekki-7" class="show-up-from-right">
+  </div>
+</section>
+<section id="flash"></section>
+<section id="start" class="overlay">
+  <div>
+    <h1>Arcade Game</h1>
+    <div class="created-by">by Nekki</div>
+  </div>
+  <div id="start-animation">
+    <img id="start-enemy" src="images/enemy-bug.png" alt="enemy">
+    <img id="start-gem" src="images/Gem%20Orange.png" alt="gem">
+    <img id="start-boy" src="images/char-boy.png" alt="boy">
+  </div>
+  <div>
+    <p class="start-guide">
+      click the button to start
+    </p>
+  </div>
+  <div class="action">
+    <div class="row">
+      <div class="col-6">
+        <button id="start-button-with-sounds" class="button">Start with sounds</button>
+      </div>
+      <div class="col-6">
+        <button id="start-button" class="button">Start</button>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="countdown" class="overlay">
+  <div id="counter">
+    <img id="count3" class="counter" src="images/counter/three.png" alt="3">
+    <img id="count2" class="counter" src="images/counter/two.png" alt="2">
+    <img id="count1" class="counter" src="images/counter/one.png" alt="1">
+  </div>
+</section>
+<section id="dead" class="overlay"></section>
+<section id="end" class="overlay"></section>
+<section id="game-info">
+  <h1>
+    <span class="level">L</span><span class="level">e</span><span class="level">v</span><span
+      class="level">e</span><span
+      class="level">l</span><span id="current-level" class="level">1</span>
+  </h1>
+  <div id="score">
+    Score: <span id="current-score">000000</span>
+  </div>
+  <div id="life">
+    <img src="images/heart.png" alt="life"><span>x 3</span>
+  </div>
+</section>
 
-    <script id="indicator-template" type="text/x-handlebars-template">
-        <section id="indicator">
-            <h1>Time Limit to the Next Level</h1>
-            <div id="indicator-wrapper">
-                <div class="meter meter-1"></div>
-                <div class="meter meter-2"></div>
-                <div class="meter meter-3"></div>
-                <div class="meter meter-4"></div>
-                <div class="meter meter-5"></div>
-                <div class="meter meter-6"></div>
-                <div class="meter meter-7"></div>
-                <div class="meter meter-8"></div>
-                <div class="meter meter-9"></div>
-                <div class="meter meter-10"></div>
-            </div>
-        </section>
-    </script>
-    <script src="js/jquery/jquery.min.js"></script>
-    <!--<script src="js/jquery_easing/jquery.easing.min.js"></script>-->
-    <script src="js/handlebars/handlebars.js"></script>
-    <script src="js/howler/howler.js"></script>
-    <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/engine.js"></script>
+<script id="indicator-template" type="text/x-handlebars-template">
+  <section id="indicator">
+    <h1>Time Limit to the Next Level</h1>
+    <div id="indicator-wrapper">
+      <div class="meter meter-1"></div>
+      <div class="meter meter-2"></div>
+      <div class="meter meter-3"></div>
+      <div class="meter meter-4"></div>
+      <div class="meter meter-5"></div>
+      <div class="meter meter-6"></div>
+      <div class="meter meter-7"></div>
+      <div class="meter meter-8"></div>
+      <div class="meter meter-9"></div>
+      <div class="meter meter-10"></div>
+    </div>
+  </section>
+</script>
+<script src="js/jquery/jquery.min.js"></script>
+<!--<script src="js/jquery_easing/jquery.easing.min.js"></script>-->
+<script src="js/handlebars/handlebars.js"></script>
+<script src="js/howler/howler.js"></script>
+<script src="js/resources.js"></script>
+<script src="js/app.js"></script>
+<script src="js/engine.js"></script>
 </body>
 </html>
