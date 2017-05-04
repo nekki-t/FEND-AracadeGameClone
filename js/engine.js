@@ -190,13 +190,18 @@ var Engine = (function (global) {
     'images/grass-block.png',
     'images/enemy-bug.png',
     'images/char-boy.png',
-    'images/boy_dead_1.png',
-    'images/boy_dead_2.png',
-    'images/boy_dead_3.png',
-    'images/boy_dead_4.png',
-    'images/boy_dead_5.png',
-    'images/dead-boy.png',
-    'images/char-pink-girl.png'
+    'images/boy-dead.png',
+    'images/cat-girl-dead.png',
+    'images/horn-girl-dead.png',
+    'images/pink-girl-dead.png',
+    'images/princess-girl-dead.png',
+    'images/char-cat-girl.png',
+    'images/char-pink-girl.png',
+    'images/char-horn-girl.png',
+    'images/char-princess-girl.png',
+    'images/Gem Blue.png',
+    'images/Gem Green.png',
+    'images/Gem Orange.png'
   ]);
   Resources.onReady(init);
 

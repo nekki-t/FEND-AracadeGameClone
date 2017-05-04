@@ -398,21 +398,22 @@ body {
 }
 
 .button {
-  font-size: 50px;
+  font-size: 30px;
   font-weight: 900;
   border-radius: 5px;
-  width: 300px;
+  width: 70%;
+  max-width: 400px;
   height: 80px;
   transition: all 0.3s ease-in-out;
   background-color: aqua;
   border: none;
-  -webkit-box-shadow: 0 3px 3px 5px #ced4f1;
-  -moz-box-shadow: 0 3px 3px 5px #ced4f1;
-  box-shadow: 0 3px 3px 5px #ced4f1;
+  -webkit-box-shadow: 0 3px 3px 3px #f0ffab;
+  -moz-box-shadow: 0 3px 3px 3px #f0ffab;
+  box-shadow: 0 3px 3px 3px #f0ffab;
 }
 
 .button:hover {
-  background-color: rgba(244, 163, 195, 0.8);
+  background-color: rgba(244, 122, 225, 0.8);
 }
 
 /*
@@ -447,7 +448,6 @@ body {
 #game-info #score {
   font-size: 50px;
   color: #FFFFAD;
-
 }
 
 #game-info #score #current-score {
@@ -486,21 +486,26 @@ body {
   width: 9%;
   margin-right: 1px;
   height: 30px;
-  transition: all 0.3s ease-in-out;
   opacity: 0;
   display: inline-block;
 }
 
 #indicator .meter-1,
 #indicator .meter-2,
-#indicator .meter-3 {
-  background-color: white;
+#indicator .meter-3,
+#indicator .meter-4,
+#indicator .meter-5,
+#indicator .meter-6,
+#indicator .meter-7,
+#indicator .meter-8,
+#indicator .meter-9,
+#indicator .meter-10{
+  background-color: deepskyblue;
 }
 
 /*
   Common ##########################################
 */
-
 .row {
   width: 100%;
   display: flex;
