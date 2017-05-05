@@ -15,11 +15,10 @@ var BOTTOM_BORDER = 400;
 var PLAYER_1ST_ROW = 71;
 var PLAYER_2ND_ROW = 155;
 var PLAYER_3RD_ROW = 239;
-var CHAR_LEVEL_2 = 2;
-var CHAR_LEVEL_3 = 3;
-var CHAR_LEVEL_4 = 4;
-var CHAR_LEVEL_5 = 5;
-
+var CHAR_LEVEL_2 = 5;
+var CHAR_LEVEL_3 = 10;
+var CHAR_LEVEL_4 = 15;
+var CHAR_LEVEL_5 = 30;
 
 // Game Fields
 var ENEMY_1ST_ROW = 56;
@@ -95,8 +94,6 @@ var timeLimit = TIME_LIMIT_TO_CLEAR_A_LEVEL;
 var countDownTimer;
 var levelTimer;
 var enemiesTimer;
-
-
 
 /**
  * @description jQuery functions -> to manipulate DOM other than canvas
@@ -184,7 +181,7 @@ jQuery(function ($) {
       }, 4000);
     },
     start: function (e) {
-      withSound = ($(e.target).attr('id') == 'start-button-with-sounds');
+      withSound = ($(e.target).attr('id') === 'start-button-with-sounds');
       clearInterval(openingTimer);
       $('#countdown').slideDown('fast', function () {
         $('#start').hide();
@@ -290,14 +287,12 @@ var Player = function (x, y) {
   this.sprite3 = "images/char-cat-girl.png";
   this.sprite4 = "images/char-horn-girl.png";
   this.sprite5 = "images/char-princess-girl.png";
-  this.currentSprite = this.sprite1;
 
   this.dead_sprite1 = "images/boy-dead.png";
   this.dead_sprite2 = "images/pink-girl-dead.png";
   this.dead_sprite3 = "images/cat-girl-dead.png";
   this.dead_sprite4 = "images/horn-girl-dead.png";
   this.dead_sprite5 = "images/princess-girl-dead.png";
-  this.currentDeadSprite = this.dead_sprite1;
 
   this.x = x;
   this.y = y;
@@ -347,7 +342,7 @@ Player.prototype.loseLife = function () {
     meterReset();
   } else {
     // TODO: GameOver
-    resetAll();
+    stopTimers();
     location.reload();
   }
 };
@@ -399,7 +394,7 @@ Player.prototype.renderGotGem = function() {
 };
 
 Player.prototype.renderGotHeart = function() {
-  if (gotHeartTextX == INVALID_NUM || gotHeartTextY == INVALID_NUM) {
+  if (gotHeartTextX === INVALID_NUM || gotHeartTextY === INVALID_NUM) {
     gotHeartTextX = this.x;
     gotHeartTextY = this.y + PLAYER_HIT_HEIGHT + MESSAGE_Y_POS_ADJUSTMENT;
   }
@@ -654,13 +649,13 @@ function placeGems() {
     var x = randomItemX();
     var y = randomItemRow();
 
-    if(heart && heart.x == x && heart.y == y) {
+    if(heart && heart.x === x && heart.y === y) {
       // if there is a heart already, no need to place a gem
       return;
     }
 
     gems.forEach(function(gem) {
-      if(gem.x == x && gem.y == y) {
+      if(gem.x === x && gem.y === y) {
         return; // already another gem on the same location
       }
     });
@@ -706,7 +701,7 @@ function placeHeart() {
 function checkGetItem() {
 
   if(heart && heart.isShown) {
-    if(player.x == heart.x && player.y == heart.orgY) {
+    if(player.x === heart.x && player.y === heart.orgY) {
       player.gotHeart = true;
       player.lives += 1;
       heart = null;
@@ -714,7 +709,7 @@ function checkGetItem() {
   }
 
   gems.forEach(function(gem, index) {
-    if(player.x == gem.x && player.y == gem.orgY) {
+    if(player.x === gem.x && player.y === gem.orgY) {
       player.score += gem.score;
       gem.hitPosX = player.x;
       gem.hitPosY = player.y;
@@ -902,25 +897,7 @@ function showLevelInfo () {
  * @description
  * - reset all variables
 */
-function resetAll () {
-  player = playerFactory();
-  allEnemies = [];
-  gems = [];
-  heart = null;
-  gotHeartTextY = INVALID_NUM;
-  gotHeartTextX = INVALID_NUM;
-
-  currentBasicSpeed = BASIC_SPEED;
-  currentEnemyRowCount = ENEMY_ROW_COUNT;
-  currentEnemyAppearInterval = ENEMIES_APPEAR_INTERVAL;
-
-  enemyIndex = 0;
-  dead = false;
-  levelClearTextPos = 0;
-  gotHeartTextPos = 0;
-  deadTextPos = 0;
-  withSound = false;
-  timeLimit = TIME_LIMIT_TO_CLEAR_A_LEVEL;
+function stopTimers () {
   clearInterval(levelTimer);
   clearInterval(enemiesTimer);
 }
