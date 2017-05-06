@@ -68,8 +68,6 @@
     <img id="count1" class="counter" src="images/counter/one.png" alt="1">
   </div>
 </section>
-<section id="dead" class="overlay"></section>
-<section id="end" class="overlay"></section>
 <section id="game-info">
   <h1>
     <span class="level">L</span><span class="level">e</span><span class="level">v</span><span
@@ -81,6 +79,36 @@
   </div>
   <div id="life">
     <img src="images/heart.png" alt="life"><span id="lives">x 3</span>
+  </div>
+</section>
+
+<section id="game-over" class="overlay">
+  <img id="angel" src="./images/angel.png" alt="angel">
+  <div id="game-over-text" class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+      <span class="game-over-char game-over-char1">G</span>
+      <span class="game-over-char game-over-char2">A</span>
+      <span class="game-over-char game-over-char3">M</span>
+      <span class="game-over-char game-over-char4">E</span>
+      <span class="game-over-char game-over-char5 spacer-50">O</span>
+      <span class="game-over-char game-over-char6">V</span>
+      <span class="game-over-char game-over-char7">E</span>
+      <span class="game-over-char game-over-char8">R</span>
+    </div>
+    <div class="col-2"></div>
+  </div>
+  <div id="final-score">
+    Final Score: <span id="final-score-text"></span>
+  </div>
+  <div id="highest-score">
+    Your past highest score: <span id="highest-score-text"></span>
+  </div>
+  <div id="congratulation">
+    Exceeded your past highest score!!
+  </div>
+  <div class="action">
+    <button id="restart-button" class="button">Restart</button>
   </div>
 </section>
 

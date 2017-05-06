@@ -403,6 +403,7 @@ body {
   border-radius: 5px;
   width: 70%;
   max-width: 400px;
+  min-width: 180px;
   height: 80px;
   transition: all 0.3s ease-in-out;
   background-color: aqua;
@@ -499,8 +500,62 @@ body {
 #indicator .meter-7,
 #indicator .meter-8,
 #indicator .meter-9,
-#indicator .meter-10{
+#indicator .meter-10 {
   background-color: deepskyblue;
+}
+
+/*
+  GAME OVER ##########################################
+*/
+#game-over {
+  position: relative;
+}
+
+#game-over-text {
+  margin-top: 300px;
+}
+
+.game-over-char {
+  font-size: 100px;
+  color: #f51fa6;
+  opacity: 0;
+  text-shadow: 2px 2px 2px #FFFF00;
+}
+
+#angel {
+  position: absolute;
+  top: 500px;
+  left: calc(100vw / 2 - 135px);
+  opacity: 0;
+  text-align: center;
+}
+
+#final-score {
+  font-size: 50px;
+  margin-top: 20px;
+  color: lawngreen;
+  text-shadow: 2px 2px 2px #FFFF00;
+  opacity: 0;
+}
+
+#highest-score {
+  font-size: 30px;
+  margin-top: 10px;
+  color: #fc982d;
+  text-shadow: 1px 1px 1px #6b0cff;
+  opacity: 0;
+}
+
+#congratulation {
+  font-size: 20px;
+  color: #ffff34;
+  text-shadow: 1px 1px 1px #ff36c0;
+  opacity: 0;
+  margin-bottom: 30px;
+}
+
+#restart-button {
+  display: none;
 }
 
 /*
