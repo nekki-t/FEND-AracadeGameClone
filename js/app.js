@@ -626,9 +626,9 @@ Player.prototype.renderLevelUp = function () {
 Player.prototype.renderSprite = function() {
   var image = this.sprite1;
   if(this.superModeCount > 0) {
-    if (this.currentLevel === CHAR_LEVEL_4) {
+    if (this.currentLevel >= CHAR_LEVEL_4 && this.currentLevel < CHAR_LEVEL_5) {
       image = this.spriteSuperModeHorn;
-    } else {
+    } else if (this.currentLevel >= CHAR_LEVEL_5){
       image = this.spriteSuperModePrincess;
     }
   } else if (this.currentLevel >= CHAR_LEVEL_2 && this.currentLevel < CHAR_LEVEL_3) {
