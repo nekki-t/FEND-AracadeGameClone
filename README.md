@@ -11,30 +11,30 @@ You must do the things above within 10 seconds in each level.
 ## Getting Started
 To run the app, simply visit the site blow with your browser.  
 https://nekki-t.github.io/FEND-AracadeGameClone/  
-If you want to run the app locally, follow the instructions below.
-#####1. Open your terminal and clone this repository to a directory you like:
+If you want to run the app locally, follow the instructions below.  
+##### 1. Open your terminal and clone this repository to a directory you like:
 ```
 $ git clone https://github.com/nekki-t/FEND-AracadeGameClone.git
 ```
-#####2. Move to the directory which you cloned to:
+##### 2. Move to the directory which you cloned to:
 ```
 e.g.
 $ cd /directory/FEND-AracadeGameClone
 ```
-#####3. Install http-server:
+##### 3. Install http-server:
 ```
 $ npm install http-server -g
 ```
 ref. https://github.com/indexzero/http-server
-#####4. Run server:
+##### 4. Run server:
 ```
 $ http-server
 ```
-#####5. Visit url:
+##### 5. Visit url:
 ```
 $ http://localhost:8080
 ```
-You can also visit one of the urls shown on your terminal.
+You can also visit one of the urls shown on your terminal.  
 ## How to play
 
 ### 1. Opening animationfavicon.ico
