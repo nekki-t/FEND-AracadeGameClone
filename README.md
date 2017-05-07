@@ -14,12 +14,12 @@ https://nekki-t.github.io/FEND-ArcadeGameClone/
 If you want to run the app locally, follow the instructions below.  
 ##### 1. Open your terminal and clone this repository to a directory you like:
 ```
-$ git clone https://github.com/nekki-t/FEND-AracadeGameClone.git
+$ git clone https://github.com/nekki-t/FEND-ArcadeGameClone.git
 ```
 ##### 2. Move to the directory which you cloned to:
 ```
 e.g.
-$ cd /directory/FEND-AracadeGameClone
+$ cd /directory/FEND-ArcadeGameClone
 ```
 ##### 3. Install http-server:
 ```
