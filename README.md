@@ -9,7 +9,7 @@ Your mission is very simple:
 You must do the things above within 10 seconds in each level.
 
 ## Getting Started
-To run the app, simply visit the site blow with your browser.  
+To run the app, simply visit the site below with your browser.  
 https://nekki-t.github.io/FEND-ArcadeGameClone/  
 If you want to run the app locally, follow the instructions below.  
 ##### 1. Open your terminal and clone this repository to a directory you like:
