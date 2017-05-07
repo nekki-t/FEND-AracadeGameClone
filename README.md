@@ -8,9 +8,36 @@ Your mission is very simple:
 + reach to the top
 You must do the things above within 10 seconds in each level.
 
+## Getting Started
+To run the app, simply visit the site blow with your browser.  
+https://nekki-t.github.io/FEND-AracadeGameClone/  
+If you want to run the app locally, follow the instructions below.
+#####1. Open your terminal and clone this repository to a directory you like:
+```
+$ git clone https://github.com/nekki-t/FEND-AracadeGameClone.git
+```
+#####2. Move to the directory which you cloned to:
+```
+e.g.
+$ cd /directory/FEND-AracadeGameClone
+```
+#####3. Install http-server:
+```
+$ npm install http-server -g
+```
+ref. https://github.com/indexzero/http-server
+#####4. Run server:
+```
+$ http-server
+```
+#####5. Visit url:
+```
+$ http://localhost:8080
+```
+You can also visit one of the urls shown on your terminal.
 ## How to play
 
-### 1. Opening animation
+### 1. Opening animationfavicon.ico
 As soon as click the link for the app in your browser, opening animation will come up.
 Just enjoy it and get ready for starting the game. 
 ![alt text](./read_me_images/openning.png "opening image")
@@ -98,6 +125,6 @@ horn girl
 + level 30 and above  
 princess
 
-### To get high score
+### To get higher score
 Try to get as many as gems, heart and stars. Especially, it is very wise to get stars first then collect other items after the game become so difficult.  
 Have fun and Cheers!!

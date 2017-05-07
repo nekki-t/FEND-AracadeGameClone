@@ -25,8 +25,8 @@ var ENEMY_1ST_ROW = 56;
 var ENEMY_2ND_ROW = 140;
 var ENEMY_3RD_ROW = 224;
 var ROW_HEIGHT = 84;
-var DELETE_ENEMY_COUNT = 5;
 var DEFAULT_ENEMY_START_X_POINT = -100;
+var OUTSIDE = 505;
 
 // related to difficulties
 var BASIC_SPEED = 100;
@@ -38,7 +38,7 @@ var UNLUCKY_LEVEL = 0.95;
 var EXTRA_FAST_LEVEL = 0.8;
 
 var ENEMIES_APPEAR_INTERVAL = 3000;
-var EXECUTE_DELETE_ENEMIES_COUNT = 50;
+var EXECUTE_DELETE_ENEMIES_COUNT = 30;
 
 // Figure info
 var MOVE_WIDTH = 100;
@@ -64,6 +64,7 @@ var RATE_HEART_APPEAR = 0.2;
 var STAR_APPEAR_LEVEL = CHAR_LEVEL_4;
 var RATE_STAR_APPEAR = 0.4;
 var SUPER_MODE_COUNT_START = 3;
+var MOST_DIFFICULT_INTERVAL = 800;
 
 // Default Lives the player has
 var DEFAULT_LIVES = 3;
@@ -126,11 +127,13 @@ var timeoutSound;
 function initSound () {
   mainBGM = new Howl({
     src: ['sounds/bgm.mp3'],
+    loop: true,
     volume: VOLUME
   });
 
   superModeBGM = new Howl({
     src: ['sounds/bgmSuperMode.mp3'],
+    loop: true,
     volume: VOLUME
   });
 
@@ -223,7 +226,9 @@ jQuery(function ($) {
     var indicator = Handlebars.compile($('#indicator-template').html());
     $('body').append(indicator);
 
-    withSound && mainBGM.play();
+    if(withSound) {
+      mainBGM.play();
+    }
 
     showLevelInfo();
     newEnemies(); // only for the first call
@@ -255,7 +260,7 @@ jQuery(function ($) {
           $('#opening').hide();
           $('#start').show();
           moveCharactors();
-          openingTimer = setInterval(moveCharactors, 6000)
+          openingTimer = setInterval(moveCharactors, 6000);
         }).fadeOut('fast');
       }, 4000);
     },
@@ -263,7 +268,9 @@ jQuery(function ($) {
       withSound = ($(e.target).attr('id') === 'start-button-with-sounds');
       clearInterval(openingTimer);
       $('#countdown').slideDown('fast', function () {
-        withSound && countDownBGM.play();
+        if(withSound) {
+          countDownBGM.play();
+        }
         $('#start').hide();
         countDownTimer = setTimeout(function () {
           beginGame();
@@ -279,25 +286,36 @@ jQuery(function ($) {
 });
 
 /**
- * @description Enemies our player must avoid
- * @param {integer} x - x position
- * @param {integer} y - y position
- * @param {integer} speed - speed to move enemy
- */
-var Enemy = function (x, y, speed) {
-  // Variables applied to each of our instances go here,
-  // we've provided one for you to get started
+ * @description
+ * - super class for game entities
+ * @param {integer} x - x position to be rendered
+ * @param {integer} y - y position to be rendered
+ * @param {string} sprite - sprite image path to be rendered
+*/
+var GameEntity = function(x, y, sprite) {
   this.x = x;
   this.y = y;
+  this.sprite = sprite;
+};
+
+/**
+ * @description
+ *  - Enemy class inherited from GameEntity
+ * @constructor
+ *  - Enemy
+ * @param {integer} x - x position to be rendered
+ * @param {integer} y - y position to be rendered
+ * @param {integer} speed - speed to move
+*/
+function Enemy (x, y, speed) {
+  GameEntity.call(this, x, y, 'images/enemy-bug.png');
   this.speed = speed;
 
   enemyIndex += 1;
   this.index = enemyIndex;
-
-  // The image/sprite for our enemies, this uses
-  // a helper we've provided to easily load images
-  this.sprite = 'images/enemy-bug.png';
-};
+}
+Enemy.prototype = Object.create(GameEntity.prototype);
+Enemy.prototype.constructor = Enemy;
 
 /**
  * @description Update the enemy's position, required method for game
@@ -331,7 +349,7 @@ Enemy.prototype.inTarget = function () {
     (player.y === PLAYER_2ND_ROW && this.y === ENEMY_2ND_ROW) ||
     (player.y === PLAYER_3RD_ROW && this.y === ENEMY_3RD_ROW)
   ) {
-    return (collided(this));
+    return (this.collided());
   } else {
     return false;
   }
@@ -340,36 +358,42 @@ Enemy.prototype.inTarget = function () {
 /**
  * @description
  * judge if player is collided with an enemy
- * @param {enemy} enemy - an enemy instance
  */
-function collided(enemy) {
-  if ((enemy.x < player.x && player.x < (enemy.x + ENEMY_WIDTH)) ||
-    enemy.x > player.x && enemy.x < (player.x + PLAYER_WIDTH)
+Enemy.prototype.collided = function() {
+  if ((this.x < player.x && player.x < (this.x + ENEMY_WIDTH)) ||
+    this.x > player.x && this.x < (player.x + PLAYER_WIDTH)
   ) {
     if(!player.collided) {
       if(player.superModeCount > 0) {
-        withSound && !hitSoundSuperMode.playing() && hitSoundSuperMode.play();
+        if(withSound && !hitSoundSuperMode.playing()) {
+          hitSoundSuperMode.play();
+        }
         return false; // when superMode, no collisions
       }
-      withSound && hitSound.play();
+      if(withSound) {
+        hitSound.play();
+      }
     }
     player.collided = true;
     return true;
   } else {
     return false;
   }
-}
+};
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 /**
  * @description
- * Player Class
+ *  - Player Class inherited from GameEntity
+ * @constructor
+ *  - Player
  * @param {integer} x - default x position
  * @param {integer} y - default y position
  */
-var Player = function (x, y) {
+function Player (x, y) {
+  GameEntity.call(this, x, y, '');
   this.sprite1 = 'images/char-boy.png';
   this.sprite2 = 'images/char-pink-girl.png';
   this.sprite3 = 'images/char-cat-girl.png';
@@ -384,9 +408,6 @@ var Player = function (x, y) {
   this.dead_sprite4 = 'images/horn-girl-dead.png';
   this.dead_sprite5 = 'images/princess-girl-dead.png';
 
-  this.x = x;
-  this.y = y;
-
   // status for rendering
   this.collided = false;
   this.timeOut = false;
@@ -399,7 +420,9 @@ var Player = function (x, y) {
   this.currentLevel = 1;
   this.lives = DEFAULT_LIVES;
   this.score = 0;
-};
+}
+Player.prototype = Object.create(GameEntity.prototype);
+Player.prototype.constructor = Player;
 
 /**
  * @description
@@ -606,7 +629,7 @@ Player.prototype.renderLevelUp = function () {
   var scoreText = BASIC_SCORE * (this.currentLevel - 1); // must be calculated by previous level
 
   ctx.strokeStyle = 'red';
-  ctx.strokeText(scoreText + ' Up', this.x, this.y + PLAYER_HIT_HEIGHT + MESSAGE_Y_POS_ADJUSTMENT - levelClearTextPos)
+  ctx.strokeText(scoreText + ' Up', this.x, this.y + PLAYER_HIT_HEIGHT + MESSAGE_Y_POS_ADJUSTMENT - levelClearTextPos);
 
   ctx.fillStyle = 'yellow';
   ctx.fillText(scoreText + ' Up', this.x, this.y + PLAYER_HIT_HEIGHT + MESSAGE_Y_POS_ADJUSTMENT - levelClearTextPos);
@@ -712,13 +735,15 @@ Player.prototype.levelUp = function () {
   this.reachedToTop = true;
   if(player.superModeCount > 0) {
     player.superModeCount -= 1;
-    if (withSound && player.superModeCount == 0) {
-      mainBGM.play();
+    if (withSound && player.superModeCount === 0) {
       superModeBGM.stop();
+      mainBGM.play();
     }
   }
 
-  withSound && levelUpSound.play();
+  if(withSound) {
+    levelUpSound.play();
+  }
 
   this.score += BASIC_SCORE * this.currentLevel;
   this.currentLevel++;
@@ -739,16 +764,18 @@ Player.prototype.levelUp = function () {
 /**
  * @description
  * - Heart Class -> enables player to increase life count
+ * @constructor
+ * - Heart
  * @param {integer} x - x position to be displayed
  * @param {integer} y - y position to be displayed
-*/
-var Heart = function(x, y) {
-  this.x = x;
-  this.y = y + 10; // adjust to fit in a block
+ */
+function Heart (x, y) {
+  GameEntity.call(this, x, y + 10, 'images/Heart.png'); // y position is to be adjusted
   this.orgY = y; //same measurement as player's y
   this.isShown = false;
-  this.sprite = 'images/Heart.png';
-};
+}
+Heart.prototype = Object.create(GameEntity.prototype);
+Heart.prototype.constructor = Heart;
 
 /**
  * @description
@@ -760,36 +787,44 @@ Heart.prototype.render = function() {
 
 /**
  * @description
- * - Class for Gems to get higher scores which are placed randomly
+ *  - Class for Gems to get higher scores which are placed randomly
+ *    Inherited from GameEntity
+ * @constructor
+ *  - Gem
  * @param {integer} x - x position to be displayed
  * @param {integer} y - y position to be displayed
  * @param {string} color - color of gem to instanciate
 */
-var Gem = function(x, y, color) {
-  this.x = x;
-  this.y = y - 10; // adjust
+function Gem (x, y, color) {
+  var spritePath = '';
+  switch(color) {
+    case GEM_COLOR_ORANGE:
+      spritePath = 'images/Gem Orange.png';
+      this.score = GEM_SCORE_ORANGE;
+      break;
+    case GEM_COLOR_GREEN:
+      spritePath = 'images/Gem Green.png';
+      this.score = GEM_SCORE_GREEN;
+      break;
+    case GEM_COLOR_BLUE:
+      spritePath =  'images/Gem Blue.png';
+      this.score = GEM_SCORE_BLUE;
+      break;
+    default:
+      spritePath = 'images/Gem Blue.png';
+      this.score = GEM_SCORE_BLUE;
+      break;
+  }
+  GameEntity.call(this, x, y - 10, spritePath); // Y pos is adjusted to render in the right position
   this.orgY = y;
   this.hitPosX = null;
   this.hitPosY = null;
   this.messagePos = 0;
   this.caughtByPlayer = false;
   this.hidden = false;
-  switch(color) {
-    case GEM_COLOR_ORANGE:
-      this.sprite = 'images/Gem Orange.png';
-      this.score = GEM_SCORE_ORANGE;
-      break;
-    case GEM_COLOR_GREEN:
-      this.sprite = 'images/Gem Green.png';
-      this.score = GEM_SCORE_GREEN;
-      break;
-    case GEM_COLOR_BLUE:
-    default:
-      this.sprite =  'images/Gem Blue.png';
-      this.score = GEM_SCORE_BLUE;
-      break;
-  }
-};
+}
+Gem.prototype = Object.create(GameEntity.prototype);
+Gem.prototype.constructor = Gem;
 
 /**
  * @description
@@ -799,18 +834,22 @@ Gem.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
 /**
  * @description
- * - Star class that enables player to become super strong!!
+ *  - Star class that enables player to become super strong!!
+ *   also inherited from GameEntity
+ * @constructor
+ *  - Star
+ * @param {integer} x - x position to be rendered
+ * @param {integer} y - y position to be rendered
 */
-var Star = function(x, y) {
-  this.x = x;
-  this.y = y;
+function Star (x, y) {
+  GameEntity.call(this, x, y, 'images/Star.png');
   this.orgY = y; // no adjustment for Star, but to make it the same as other items
   this.isShown = false;
-  this.sprite = 'images/Star.png';
-};
+}
+Star.prototype = Object.create(GameEntity.prototype);
+Star.prototype.constructor = Star;
 
 /**
  * @description
@@ -871,14 +910,12 @@ function placeGems() {
     if((heart && heart.x === x && heart.orgY === y) ||
       (star && star.x === x && star.orgY === y )) {
       // if there is a heart or a star already, no need to place a gem
-      return;
+      break;
     }
 
-    gems.forEach(function(gem) {
-      if(gem.x === x && gem.y === y) {
-        return; // already another gem on the same location
-      }
-    });
+    if(isAnotherGem(x, y)) {
+      break;
+    }
 
     var color = GEM_COLOR_BLUE; // default
     if (gemRnd < RATE_ORANGE_GEM_APPEAR) {
@@ -898,6 +935,17 @@ function placeGems() {
       if(a.y > b.y) return 1;
     });
   }
+}
+
+function isAnotherGem(x, y) {
+  var result = false;
+
+  gems.forEach(function(gem) {
+    if(gem.x === x && gem.y === y) {
+      result = true;
+    }
+  });
+  return result;
 }
 
 /**
@@ -923,7 +971,9 @@ function checkGetItem() {
   if(heart && heart.isShown) {
     if(player.x === heart.x && player.y === heart.orgY) {
       if(!player.gotHeart) {
-        withSound && itemSound.play();
+        if(withSound) {
+          itemSound.play();
+        }
       }
       player.gotHeart = true;
       player.lives += 1;
@@ -934,7 +984,9 @@ function checkGetItem() {
   if(star && star.isShown) {
     if(player.x === star.x && player.y === star.orgY) {
       if(!player.gotStar) {
-        withSound && itemSound.play();
+        if(withSound) {
+          itemSound.play();
+        }
       }
       player.gotStar = true;
       player.superModeCount = SUPER_MODE_COUNT_START;
@@ -952,7 +1004,9 @@ function checkGetItem() {
       gem.hitPosX = player.x;
       gem.hitPosY = player.y;
       if(!gem.caughtByPlayer) {
-        withSound && itemSound.play();
+        if(withSound) {
+          itemSound.play();
+        }
       }
       gem.caughtByPlayer = true;
     }
@@ -978,7 +1032,11 @@ function newEnemies() {
   }
 
   if (allEnemies.length > EXECUTE_DELETE_ENEMIES_COUNT) {
-    allEnemies.splice(0, DELETE_ENEMY_COUNT); // to reduce memory use
+    allEnemies.forEach(function(enemy, index){
+      if(enemy.x >= OUTSIDE) {
+        allEnemies.splice(index, 1);
+      }
+    });
   }
 }
 
@@ -1061,6 +1119,9 @@ function moreDifficult (level) {
   clearInterval(enemiesTimer);
   newEnemies();
   currentEnemyAppearInterval -= level * 3; // for adjustment
+  if(currentEnemyAppearInterval < MOST_DIFFICULT_INTERVAL) {
+    currentEnemyAppearInterval = MOST_DIFFICULT_INTERVAL;
+  }
   enemiesTimer = setInterval(newEnemies, currentEnemyAppearInterval);
 }
 
@@ -1113,7 +1174,9 @@ function countDownForLevel() {
     $('.meter').css('background-color', 'red');
   } else if (meter == 1) {
     if(!player.timeOut) {
-      withSound && timeoutSound.play();
+      if(withSound) {
+        timeoutSound.play();
+      }
     }
     player.timeOut = true;
   }
@@ -1147,7 +1210,7 @@ function meterReset() {
           });
         });
       });
-    })
+    });
   });
   levelTimer = setInterval(countDownForLevel, TIME_OUT_TICKING);
 }
@@ -1179,15 +1242,17 @@ function stopTimers () {
  * - show game over view with final score information
 */
 function gameOver () {
-  withSound && mainBGM.stop();
+  if(withSound) {
+    mainBGM.stop();
+    gameOverBGM.play();
+  }
   $('#game-info').hide();
-  withSound && gameOverBGM.play();
   $('#game-over').fadeIn('slow');
 
   var store = localStorage.getItem(LOCAL_STORAGE_NAMESPACE);
   var highestScore = 0;
   if(!store) {
-    localStorage.setItem(LOCAL_STORAGE_NAMESPACE, JSON.stringify({highest_score: player.score}))
+    localStorage.setItem(LOCAL_STORAGE_NAMESPACE, JSON.stringify({highest_score: player.score}));
   } else {
     highestScore = JSON.parse(store).highest_score;
     if(player.score > highestScore) {
@@ -1213,7 +1278,7 @@ function gameOver () {
                         $('#restart-button').show();
                         if(player.score > highestScore && highestScore > 0) {
                           $('#congratulation').animate({opacity: 1}, 1000, function(){
-                            setInterval(flashCongratulation, 1000)
+                            setInterval(flashCongratulation, 1000);
                           });
                         }
                       });
@@ -1236,5 +1301,5 @@ function gameOver () {
 function flashCongratulation () {
   $('#congratulation').animate({opacity: 0}, 100, function() {
     $('#congratulation').animate({opacity: 1}, 100);
-  })
+  });
 }

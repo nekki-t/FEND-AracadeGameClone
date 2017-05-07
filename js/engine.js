@@ -56,15 +56,7 @@ var Engine = (function (global) {
     /* Use the browser's requestAnimationFrame function to call this
      * function again as soon as the browser is able to draw another frame.
      */
-    // if (player.collided) {
-    //   player.dead(ctx);
-    //   setTimeout(function () {
-    //     player.resetPosition();
-    //     win.requestAnimationFrame(main);
-    //   }, 1000);
-    // } else {
-      win.requestAnimationFrame(main);
-    // }
+    win.requestAnimationFrame(main);
 
   }
 
@@ -131,12 +123,11 @@ var Engine = (function (global) {
     /**
      * @description  custom method
      * - set dummy background to hide unnecessary character's afterimage
-    */
+     */
     var dummyImage = 'images/dummy-background.png'
-    for(col=0; col< numCols; col ++) {
+    for (col = 0; col < numCols; col++) {
       ctx.drawImage(Resources.get(dummyImage), col * 101, -83);
     }
-
 
 
     /* Loop through the number of rows and columns we've defined above
@@ -157,7 +148,6 @@ var Engine = (function (global) {
     }
 
 
-
     renderEntities();
   }
 
@@ -169,17 +159,17 @@ var Engine = (function (global) {
     /* Loop through all of the objects within the allEnemies array and call
      * the render function you have defined.
      */
-    gems.forEach(function(gem) {
-      if(!gem.caughtByPlayer) {
+    gems.forEach(function (gem) {
+      if (!gem.caughtByPlayer) {
         gem.render();
       }
     });
 
-    if(heart && heart.isShown) {
+    if (heart && heart.isShown) {
       heart.render();
     }
 
-    if(star && star.isShown) {
+    if (star && star.isShown) {
       star.render();
     }
 
