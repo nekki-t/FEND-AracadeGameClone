@@ -37,7 +37,7 @@ $ http://localhost:8080
 You can also visit one of the urls shown on your terminal.  
 ## How to play
 
-### 1. Opening animationfavicon.ico
+### 1. Opening animation
 As soon as click the link for the app in your browser, opening animation will come up.
 Just enjoy it and get ready for starting the game. 
 ![alt text](./read_me_images/openning.png "opening image")
